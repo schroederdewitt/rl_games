@@ -15,6 +15,9 @@ class IVecEnv(object):
     def get_number_of_agents(self):
         return 1
 
+    def get_number_of_actions(self):
+        raise 1
+
 
 class IsaacEnv(IVecEnv):
     def __init__(self, config_name, num_actors, config = None):
@@ -63,6 +66,9 @@ class RayWorker:
 
     def get_number_of_agents(self):
         return self.env.get_number_of_agents()
+
+    def get_number_of_actions(self):
+        return self.env.get_number_of_actions()
 
 
 class RayVecEnv(IVecEnv):
@@ -119,10 +125,15 @@ class RayVecSMACEnv(IVecEnv):
         self.remote_worker = ray.remote(RayWorker)
         self.workers = [self.remote_worker.remote(self.config_name, kwargs) for i in range(self.num_actors)]
         res = self.workers[0].get_number_of_agents.remote()
+        n_acts = self.workers[0].get_number_of_actions.remote()
         self.num_agents = ray.get(res)
+        self.n_actions = ray.get(n_acts)
 
     def get_number_of_agents(self):
         return self.num_agents
+
+    def get_number_of_actions(self):
+        return self.n_actions
 
     def step(self, actions):
         newobs, newrewards, newdones, newinfos = [], [], [], []

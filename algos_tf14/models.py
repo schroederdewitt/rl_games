@@ -283,7 +283,7 @@ class VDN_DQN(BaseModel):
         # (bs * n_agents, n_actions)
         qvalues = self.network(name='agent', inputs=input_obs, actions_num=actions_num, is_train=True, reuse=False)
         # (bs, n_agents, n_actions)
-        qvalues = tf.reshape(qvalues, [batch_size_ph, n_agents, actions_num])
+        qvalues_reshaped = tf.reshape(qvalues, [batch_size_ph, n_agents, actions_num])
         # (bs * n_agents, n_actions)
         target_qvalues = tf.stop_gradient(
             self.network(name='target', inputs=input_next_obs, actions_num=actions_num, is_train=False, reuse=False))
@@ -294,7 +294,7 @@ class VDN_DQN(BaseModel):
         # (bs, n_agents, actions_num)
         one_hot_actions = tf.reshape(tf.one_hot(actions_ph, actions_num), [batch_size_ph, n_agents, actions_num])
         # (bs, n_agents, 1)
-        current_action_qvalues = tf.reduce_sum(one_hot_actions * qvalues, axis=2)
+        current_action_qvalues = tf.reduce_sum(one_hot_actions * qvalues_reshaped, axis=2)
 
         if is_double:
             # (bs * n_agents, n_actions)

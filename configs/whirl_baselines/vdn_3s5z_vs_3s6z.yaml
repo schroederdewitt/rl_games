@@ -57,7 +57,7 @@ params:
     epsilon_decay_frames: 100000
     num_epochs_to_copy: 10000
     env_name:  smac_cnn
-    name: MMM2
+    name: 3s5z_vs_3s6z
     is_double: True
     score_to_win: 20
     num_steps_fill_buffer: 10000
@@ -76,6 +76,7 @@ params:
     grad_norm: 10
     mix_with_state: False
     truncate_grads: True
+    num_actors: 1
 
     env_config:
       name: 3s5z_vs_3s6z
