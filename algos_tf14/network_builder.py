@@ -145,7 +145,7 @@ class NetworkBuilder:
             config['name'] = name + str(ind)
             #config['bias_initializer'] = tf.random_uniform_initializer,
             # bias_initializer=tf.random_uniform_initializer(-0.1, 0.1)
-            out = tf.layers.conv1d(inputs=out, **config)
+            out = tf.compat.v1.layers.conv1d(inputs=out, **config)
             print('shapes of layer_' + str(ind), str(out.get_shape().as_list()))
             if norm_func_name == 'layer_norm':
                 out = tf.contrib.layers.layer_norm(out)
@@ -302,7 +302,7 @@ class DQNBuilder(NetworkBuilder):
             dense_layer = self._noisy_dense
         else:
             dense_layer = tf.layers.dense
-        with tf.variable_scope(name, reuse=reuse):   
+        with tf.compat.v1.variable_scope(name, reuse=reuse):
             out = input
             if self.has_cnn:
                 cnn_args = {

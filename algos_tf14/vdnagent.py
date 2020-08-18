@@ -23,7 +23,7 @@ class VDNAgent:
         self.is_polynom_decay_lr = config['lr_schedule'] == 'polynom_decay'
         self.is_exp_decay_lr = config['lr_schedule'] == 'exp_decay'
         self.lr_multiplier = tf.constant(1, shape=(), dtype=tf.float32)
-        self.learning_rate_ph = tf.placeholder('float32', (), name='lr_ph')
+        self.learning_rate_ph = tf.compat.v1.placeholder('float32', (), name='lr_ph')
         self.games_to_track = tr_helpers.get_or_default(config, 'games_to_track', 100)
         self.max_epochs = tr_helpers.get_or_default(self.config, 'max_epochs', 1e6)
 
@@ -91,13 +91,15 @@ class VDNAgent:
             # self.exp_buffer = experience.PrioritizedReplayBufferCentralState(config['replay_buffer_size'], config['priority_alpha'])
             # self.sample_weights_ph = tf.placeholder(tf.float32, shape=[None, 1], name='sample_weights')
 
-        self.batch_size_ph = tf.placeholder(tf.int32, name='batch_size_ph')
-        self.obs_ph = tf.placeholder(observation_space.dtype, shape=(None,) + self.obs_shape, name='obs_ph')
-        self.state_ph = tf.placeholder(observation_space.dtype, shape=(None,) + self.state_shape, name='state_ph')
-        self.actions_ph = tf.placeholder(tf.int32, shape=[None, 1], name='actions_ph')
-        self.rewards_ph = tf.placeholder(tf.float32, shape=[None, 1], name='rewards_ph')
-        self.next_obs_ph = tf.placeholder(observation_space.dtype, shape=(None,) + self.obs_shape, name='next_obs_ph')
-        self.is_done_ph = tf.placeholder(tf.float32, shape=[None, 1], name='is_done_ph')
+        self.batch_size_ph = tf.compat.v1.placeholder(tf.int32, name='batch_size_ph')
+        self.obs_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.obs_shape, name='obs_ph')
+        self.state_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.state_shape,
+                                                 name='state_ph')
+        self.actions_ph = tf.compat.v1.placeholder(tf.int32, shape=[None, 1], name='actions_ph')
+        self.rewards_ph = tf.compat.v1.placeholder(tf.float32, shape=[None, 1], name='rewards_ph')
+        self.next_obs_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.obs_shape,
+                                                    name='next_obs_ph')
+        self.is_done_ph = tf.compat.v1.placeholder(tf.float32, shape=[None, 1], name='is_done_ph')
         self.is_not_done = 1 - self.is_done_ph
         self.name = base_name
 
@@ -123,8 +125,8 @@ class VDNAgent:
         grads = list(zip(grads, self.weights))
         self.train_op = self.train_step.apply_gradients(grads)
 
-        self.saver = tf.train.Saver()
-        self.assigns_op = [tf.assign(w_target, w_self, validate_shape=True) for w_self, w_target in
+        self.saver = tf.compat.v1.train.Saver()
+        self.assigns_op = [tf.compat.v1.assign(w_target, w_self, validate_shape=True) for w_self, w_target in
                            zip(self.weights, self.target_weights)]
         self.variables = TensorFlowVariables(self.qvalues, self.sess)
         if self.env_name:
@@ -157,8 +159,8 @@ class VDNAgent:
         # (bs, n_agents, n_actions), (bs, 1), (bs, 1)
         self.qvalues, self.current_action_qvalues_mix, self.target_action_qvalues_mix = self.network(config)
 
-        self.weights = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='agent')
-        self.target_weights = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='target')
+        self.weights = tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, scope='agent')
+        self.target_weights = tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, scope='target')
 
         self.reference_qvalues = self.rewards_ph + self.gamma_step * self.is_not_done * self.target_action_qvalues_mix
 
@@ -166,20 +168,19 @@ class VDNAgent:
             # we need to return l1 loss to update priority buffer
             self.abs_errors = tf.abs(self.current_action_qvalues_mix - self.reference_qvalues) + 1e-5
             # the same as multiply gradients later (other way is used in different examples over internet)
-            self.td_loss = tf.losses.huber_loss(self.current_action_qvalues_mix, self.reference_qvalues,
-                                                reduction=tf.losses.Reduction.NONE) * self.sample_weights_ph
+            self.td_loss = tf.compat.v1.losses.huber_loss(self.current_action_qvalues_mix, self.reference_qvalues,
+                                                          reduction=tf.compat.v1.losses.Reduction.NONE) * self.sample_weights_ph
             self.td_loss_mean = tf.reduce_mean(self.td_loss)
         else:
-            self.td_loss_mean = tf.losses.huber_loss(self.current_action_qvalues_mix, self.reference_qvalues,
-                                                     reduction=tf.losses.Reduction.MEAN)
+            self.td_loss_mean = tf.compat.v1.losses.huber_loss(self.current_action_qvalues_mix, self.reference_qvalues,
+                                                               reduction=tf.compat.v1.losses.Reduction.MEAN)
 
-        self.reg_loss = tf.losses.get_regularization_loss()
+        self.reg_loss = tf.compat.v1.losses.get_regularization_loss()
         self.td_loss_mean += self.reg_loss
         self.learning_rate = self.config['learning_rate']
         if self.env_name:
-            self.train_step = tf.train.AdamOptimizer(self.learning_rate * self.lr_multiplier).minimize(
+            self.train_step = tf.compat.v1.train.AdamOptimizer(self.learning_rate * self.lr_multiplier).minimize(
                 self.td_loss_mean, var_list=self.weights)
-
 
     def save(self, fn):
         self.saver.save(self.sess, fn)
@@ -318,21 +319,21 @@ class VDNAgent:
     def load_weights_into_target_network(self):
         self.sess.run(self.assigns_op)
 
-    #
-    # def sample_batch(self, exp_replay, batch_size):
-    #     obs_batch, act_batch, st_batch, reward_batch, next_obs_batch, is_done_batch = exp_replay.sample(batch_size)
-    #     obs_batch = obs_batch.reshape((batch_size * self.n_agents,) + self.obs_shape)
-    #     act_batch = act_batch.reshape((batch_size * self.n_agents, 1))
-    #     st_batch = st_batch.reshape((batch_size,) + self.state_shape)
-    #     next_obs_batch = next_obs_batch.reshape((batch_size * self.n_agents,) + self.obs_shape)
-    #     reward_batch = reward_batch.reshape((batch_size, 1))
-    #     is_done_batch = is_done_batch.reshape((batch_size, 1))
-    #
-    #     return {
-    #         self.obs_ph: obs_batch, self.actions_ph: act_batch, self.state_ph: st_batch,
-    #         self.rewards_ph: reward_batch, self.is_done_ph: is_done_batch, self.next_obs_ph: next_obs_batch,
-    #         self.batch_size_ph: batch_size
-    #     }
+    def sample_batch(self, exp_replay, batch_size):
+        obs_batch, act_batch, st_batch, reward_batch, next_obs_batch, is_done_batch = exp_replay.sample(batch_size)
+        obs_batch = obs_batch.reshape((batch_size * self.n_agents,) + self.obs_shape)
+        act_batch = act_batch.reshape((batch_size * self.n_agents, 1))
+        st_batch = st_batch.reshape((batch_size,) + self.state_shape)
+        next_obs_batch = next_obs_batch.reshape((batch_size * self.n_agents,) + self.obs_shape)
+        reward_batch = reward_batch.reshape((batch_size, 1))
+        is_done_batch = is_done_batch.reshape((batch_size, 1))
+
+        return {
+            self.obs_ph: obs_batch, self.actions_ph: act_batch, self.state_ph: st_batch,
+            self.rewards_ph: reward_batch, self.is_done_ph: is_done_batch, self.next_obs_ph: next_obs_batch,
+            self.batch_size_ph: batch_size
+        }
+
     #
     # def sample_prioritized_batch(self, exp_replay, batch_size, beta):
     #     obs_batch, act_batch, st_batch, reward_batch, next_obs_batch, is_done_batch, sample_weights, sample_idxes = exp_replay.sample(
@@ -350,7 +351,7 @@ class VDNAgent:
     #              self.sample_weights_ph: sample_weights,
     #              self.batch_size_ph: batch_size}
     #     return [batch, sample_idxes]
-    #
+
     def train(self):
         mem_free_steps = 0
         last_mean_rewards = -100500
@@ -377,6 +378,8 @@ class VDNAgent:
 
         while True:
             epoch_num = self.update_epoch()
+            if epoch_num % 500 == 0:
+                print("Epoch Number: {}".format(self.epoch_num))
             t_play_start = time.time()
             self.epsilon = self.epsilon_processor(frame)
             self.beta = self.beta_processor(frame)
@@ -384,15 +387,11 @@ class VDNAgent:
             for _ in range(0, steps_per_epoch):
                 reward, shaped_reward, step, info = self.play_steps(self.steps_num, self.epsilon)
                 if all(reward):
-                    print("reward: {}".format(reward))
-                    print("shaped_reward: {}".format(shaped_reward))
-                    print("step: {}".format(step))
-                    print("info: {}".format(info))
                     for actor in range(self.num_actors):
                         self.game_lengths.append(step[actor])
                         self.game_rewards.append(reward[actor])
                         game_res = info[actor].get('battle_won', 0.5)
-                        self.game_scores.append(game_res[actor])
+                        self.game_scores.append(game_res)
                         # shaped_rewards.append(shaped_reward)
 
             t_play_end = time.time()
@@ -401,81 +400,82 @@ class VDNAgent:
             # train
             frame = frame + steps_per_epoch
             t_start = time.time()
-    #         if self.is_prioritized:
-    #             batch, idxes = self.sample_prioritized_batch(self.exp_buffer, batch_size=self.batch_size,
-    #                                                          beta=self.beta)
-    #             _, loss_t, errors_update, lr_mul = self.sess.run(
-    #                 [self.train_op, self.td_loss_mean, self.abs_errors, self.lr_multiplier], batch)
-    #             self.exp_buffer.update_priorities(idxes, errors_update)
-    #         else:
-    #             batch = self.sample_batch(self.exp_buffer, batch_size=self.batch_size)
-    #             _, loss_t, lr_mul = self.sess.run(
-    #                 [self.train_op, self.td_loss_mean, self.lr_multiplier], batch)
-    #
-    #         losses.append(loss_t)
-    #         t_end = time.time()
-    #         update_time += t_end - t_start
-    #         total_time += update_time
-    #         if frame % 1000 == 0:
-    #             mem_free_steps += 1
-    #             if mem_free_steps == 10:
-    #                 mem_free_steps = 0
-    #                 tr_helpers.free_mem()
-    #             sum_time = update_time + play_time
-    #             print('frames per seconds: ', 1000 / (sum_time))
-    #             self.writer.add_scalar('performance/fps', 1000 / sum_time, frame)
-    #             self.writer.add_scalar('performance/upd_time', update_time, frame)
-    #             self.writer.add_scalar('performance/play_time', play_time, frame)
-    #             self.writer.add_scalar('losses/td_loss', np.mean(losses), frame)
-    #             self.writer.add_scalar('info/lr_mul', lr_mul, frame)
-    #             self.writer.add_scalar('info/lr', self.learning_rate * lr_mul, frame)
-    #             self.writer.add_scalar('info/epochs', epoch_num, frame)
-    #             self.writer.add_scalar('info/epsilon', self.epsilon, frame)
-    #
-    #             self.logger.log_stat("whirl/performance/fps", 1000 / sum_time, self.num_env_steps_train)
-    #             self.logger.log_stat("whirl/performance/upd_time", update_time, self.num_env_steps_train)
-    #             self.logger.log_stat("whirl/performance/play_time", play_time, self.num_env_steps_train)
-    #             self.logger.log_stat("losses/td_loss", np.mean(losses), self.num_env_steps_train)
-    #             self.logger.log_stat("whirl/info/last_lr", self.learning_rate*lr_mul, self.num_env_steps_train)
-    #             self.logger.log_stat("whirl/info/lr_mul", lr_mul, self.num_env_steps_train)
-    #             self.logger.log_stat("whirl/epochs", epoch_num, self.num_env_steps_train)
-    #             self.logger.log_stat("whirl/epsilon", self.epsilon, self.num_env_steps_train)
-    #
-    #             if self.is_prioritized:
-    #                 self.writer.add_scalar('beta', self.beta, frame)
-    #
-    #             update_time = 0
-    #             play_time = 0
-    #             num_games = len(self.game_rewards)
-    #             if num_games > 10:
-    #                 mean_rewards = np.sum(self.game_rewards) / num_games
-    #                 mean_lengths = np.sum(self.game_lengths) / num_games
-    #                 mean_scores = np.mean(self.game_scores)
-    #                 self.writer.add_scalar('rewards/mean', mean_rewards, frame)
-    #                 self.writer.add_scalar('rewards/time', mean_rewards, total_time)
-    #                 self.writer.add_scalar('episode_lengths/mean', mean_lengths, frame)
-    #                 self.writer.add_scalar('episode_lengths/time', mean_lengths, total_time)
-    #
-    #                 self.logger.log_stat("whirl/rewards/mean", np.asscalar(mean_rewards), self.num_env_steps_train)
-    #                 self.logger.log_stat("whirl/rewards/time", mean_rewards, total_time)
-    #                 self.logger.log_stat("whirl/episode_lengths/mean", np.asscalar(mean_lengths), self.num_env_steps_train)
-    #                 self.logger.log_stat("whirl/episode_lengths/time", mean_lengths, total_time)
-    #                 self.logger.log_stat("whirl/win_rate/mean", np.asscalar(mean_scores), self.num_env_steps_train)
-    #                 self.logger.log_stat("whirl/win_rate/time", np.asscalar(mean_scores), total_time)
-    #
-    #                 if mean_rewards > last_mean_rewards:
-    #                     print('saving next best rewards: ', mean_rewards)
-    #                     last_mean_rewards = mean_rewards
-    #                     self.save("./nn/" + self.config['name'] + 'ep=' + str(epoch_num) + 'rew=' + str(mean_rewards))
-    #                     if last_mean_rewards > self.config['score_to_win']:
-    #                         print('network won!')
-    #                         return last_mean_rewards, epoch_num
-    #
-    #         if frame % num_epochs_to_copy == 0:
-    #             self.load_weights_into_target_network()
-    #
-    #         if epoch_num >= self.max_epochs:
-    #             print('Max epochs reached')
-    #             self.save("./nn/" + 'last_' + self.config['name'] + 'ep=' + str(epoch_num) + 'rew=' + str(
-    #                 np.sum(self.game_rewards) / len(self.game_rewards)))
-    #             return last_mean_rewards, epoch_num
+            # if self.is_prioritized:
+            #     batch, idxes = self.sample_prioritized_batch(self.exp_buffer, batch_size=self.batch_size,
+            #                                                  beta=self.beta)
+            #     _, loss_t, errors_update, lr_mul = self.sess.run(
+            #         [self.train_op, self.td_loss_mean, self.abs_errors, self.lr_multiplier], batch)
+            #     self.exp_buffer.update_priorities(idxes, errors_update)
+            # else:
+            batch = self.sample_batch(self.exp_buffer, batch_size=self.batch_size)
+            _, loss_t, lr_mul = self.sess.run(
+                [self.train_op, self.td_loss_mean, self.lr_multiplier], batch)
+
+            losses.append(loss_t)
+            t_end = time.time()
+            update_time += t_end - t_start
+            total_time += update_time
+            if frame % 1000 == 0:
+                mem_free_steps += 1
+                if mem_free_steps == 10:
+                    mem_free_steps = 0
+                    tr_helpers.free_mem()
+                sum_time = update_time + play_time
+                print('frames per seconds: ', 1000 / (sum_time))
+                self.writer.add_scalar('performance/fps', 1000 / sum_time, frame)
+                self.writer.add_scalar('performance/upd_time', update_time, frame)
+                self.writer.add_scalar('performance/play_time', play_time, frame)
+                self.writer.add_scalar('losses/td_loss', np.mean(losses), frame)
+                self.writer.add_scalar('info/lr_mul', lr_mul, frame)
+                self.writer.add_scalar('info/lr', self.learning_rate * lr_mul, frame)
+                self.writer.add_scalar('info/epochs', epoch_num, frame)
+                self.writer.add_scalar('info/epsilon', self.epsilon, frame)
+
+                self.logger.log_stat("whirl/performance/fps", 1000 / sum_time, self.num_env_steps_train)
+                self.logger.log_stat("whirl/performance/upd_time", update_time, self.num_env_steps_train)
+                self.logger.log_stat("whirl/performance/play_time", play_time, self.num_env_steps_train)
+                self.logger.log_stat("losses/td_loss", np.mean(losses), self.num_env_steps_train)
+                self.logger.log_stat("whirl/info/last_lr", self.learning_rate * lr_mul, self.num_env_steps_train)
+                self.logger.log_stat("whirl/info/lr_mul", lr_mul, self.num_env_steps_train)
+                self.logger.log_stat("whirl/epochs", epoch_num, self.num_env_steps_train)
+                self.logger.log_stat("whirl/epsilon", self.epsilon, self.num_env_steps_train)
+
+                if self.is_prioritized:
+                    self.writer.add_scalar('beta', self.beta, frame)
+
+                update_time = 0
+                play_time = 0
+                num_games = len(self.game_rewards)
+                if num_games > 10:
+                    mean_rewards = np.sum(self.game_rewards) / num_games
+                    mean_lengths = np.sum(self.game_lengths) / num_games
+                    mean_scores = np.mean(self.game_scores)
+                    self.writer.add_scalar('rewards/mean', mean_rewards, frame)
+                    self.writer.add_scalar('rewards/time', mean_rewards, total_time)
+                    self.writer.add_scalar('episode_lengths/mean', mean_lengths, frame)
+                    self.writer.add_scalar('episode_lengths/time', mean_lengths, total_time)
+
+                    self.logger.log_stat("whirl/rewards/mean", np.asscalar(mean_rewards), self.num_env_steps_train)
+                    self.logger.log_stat("whirl/rewards/time", mean_rewards, total_time)
+                    self.logger.log_stat("whirl/episode_lengths/mean", np.asscalar(mean_lengths),
+                                         self.num_env_steps_train)
+                    self.logger.log_stat("whirl/episode_lengths/time", mean_lengths, total_time)
+                    self.logger.log_stat("whirl/win_rate/mean", np.asscalar(mean_scores), self.num_env_steps_train)
+                    self.logger.log_stat("whirl/win_rate/time", np.asscalar(mean_scores), total_time)
+
+                    if mean_rewards > last_mean_rewards:
+                        print('saving next best rewards: ', mean_rewards)
+                        last_mean_rewards = mean_rewards
+                        self.save("./nn/" + self.config['name'] + 'ep=' + str(epoch_num) + 'rew=' + str(mean_rewards))
+                        if last_mean_rewards > self.config['score_to_win']:
+                            print('network won!')
+                            return last_mean_rewards, epoch_num
+
+            if frame % num_epochs_to_copy == 0:
+                self.load_weights_into_target_network()
+
+            if epoch_num >= self.max_epochs:
+                print('Max epochs reached')
+                self.save("./nn/" + 'last_' + self.config['name'] + 'ep=' + str(epoch_num) + 'rew=' + str(
+                    np.sum(self.game_rewards) / len(self.game_rewards)))
+                return last_mean_rewards, epoch_num

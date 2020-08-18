@@ -66,15 +66,15 @@ class Runner:
         self.logger = logger
 
     def reset(self):
-        gpu_options = tf.GPUOptions(allow_growth=True)
+        gpu_options = tf.compat.v1.GPUOptions(allow_growth=True)
 
-        config = tf.ConfigProto(log_device_placement=False,
+        config = tf.compat.v1.ConfigProto(log_device_placement=False,
                                 allow_soft_placement=True,
                                 gpu_options=gpu_options)
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
         if self.sess:
             self.sess.close()
-        self.sess = tf.InteractiveSession(config=config)
+        self.sess = tf.compat.v1.InteractiveSession(config=config)
 
     def load_config(self, params):
         self.seed = params.get('seed', None)
