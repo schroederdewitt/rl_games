@@ -33,6 +33,7 @@ from sacred.observers import FileStorageObserver
 from sacred.observers import MongoObserver
 from sacred.utils import apply_backspaces_and_linefeeds
 from utils.logging import get_logger, Logger
+SETTINGS.CONFIG.READ_ONLY_CONFIG = False
 
 SETTINGS['CAPTURE_MODE'] = "fd"  # set to "no" if you want to see stdout/stderr in console
 logger = get_logger()
@@ -221,6 +222,7 @@ def my_main(_run, _config, _log):
                                        indent=4,
                                        width=1)
     _log.info("\n\n" + experiment_params + "\n")
+    _config["params"]["config"]["run_id"] = _run._id
 
     # START THE TRAINING PROCESS
     runner = Runner(logger)

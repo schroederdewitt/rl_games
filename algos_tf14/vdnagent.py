@@ -53,7 +53,7 @@ class VDNAgent:
 
         self.obs_shape = observation_shape
         self.actions_num = actions_num
-        self.writer = SummaryWriter('runs/' + config['name'] + datetime.now().strftime("%d, %H:%M:%S"))
+        self.writer = SummaryWriter('runs/' + config['name'] + "-" + str(self.config["run_id"]))
         self.epsilon = self.config['epsilon']
         self.rewards_shaper = self.config['reward_shaper']
         self.epsilon_processor = tr_helpers.LinearValueProcessor(self.config['epsilon'], self.config['min_epsilon'],
@@ -114,10 +114,10 @@ class VDNAgent:
             self.input_next_obs = tf.to_float(self.input_next_obs) / 255.0
         self.setup_qvalues(actions_num)
 
-        self.reg_loss = tf.losses.get_regularization_loss()
+        self.reg_loss = tf.compat.v1.losses.get_regularization_loss()
         self.td_loss_mean += self.reg_loss
         self.learning_rate = self.config['learning_rate']
-        self.train_step = tf.train.AdamOptimizer(
+        self.train_step = tf.compat.v1.train.AdamOptimizer(
             self.learning_rate * self.lr_multiplier)  # .minimize(self.td_loss_mean, var_list=self.weights)
         grads = tf.gradients(self.td_loss_mean, self.weights)
         if self.config['truncate_grads']:
@@ -130,7 +130,7 @@ class VDNAgent:
                            zip(self.weights, self.target_weights)]
         self.variables = TensorFlowVariables(self.qvalues, self.sess)
         if self.env_name:
-            sess.run(tf.global_variables_initializer())
+            sess.run(tf.compat.v1.global_variables_initializer())
         self._reset()
 
         self.logger = logger
@@ -175,13 +175,6 @@ class VDNAgent:
             self.td_loss_mean = tf.compat.v1.losses.huber_loss(self.current_action_qvalues_mix, self.reference_qvalues,
                                                                reduction=tf.compat.v1.losses.Reduction.MEAN)
 
-        self.reg_loss = tf.compat.v1.losses.get_regularization_loss()
-        self.td_loss_mean += self.reg_loss
-        self.learning_rate = self.config['learning_rate']
-        if self.env_name:
-            self.train_step = tf.compat.v1.train.AdamOptimizer(self.learning_rate * self.lr_multiplier).minimize(
-                self.td_loss_mean, var_list=self.weights)
-
     def save(self, fn):
         self.saver.save(self.sess, fn)
 
@@ -223,27 +216,38 @@ class VDNAgent:
         cur_gamma = 1.0
         cur_obs_act_rew_len = len(self.obs_act_rew)
 
+        play_step_t = time.time()
+
         # always break after one
         while True:
             if cur_obs_act_rew_len > 0:
                 obs = self.obs_act_rew[-1][0]
             else:
                 obs = self.current_obs
-
             # obs: (n_actors * n_agents, obs_shape)
             obs = np.reshape(obs, ((self.num_actors * self.n_agents,) + self.obs_shape))
             # state: num_actors * n_agents, state_shape
             state = self.vec_env.get_states()
 
+            self.writer.add_scalar('play_steps/1', time.time() - play_step_t, self.num_env_steps_train)
+            play_step_t = time.time()
+
             # (n_actors * n_agents,)
             action = self.get_action(obs, self.vec_env.get_action_masks(), epsilon)
             # (n_actors * n_agents,)
             action = np.squeeze(action)
+
+            self.writer.add_scalar('play_steps/2', time.time() - play_step_t, self.num_env_steps_train)
+            play_step_t = time.time()
+
             # new_obs: (n_actors * n_agents, obs_shape)
             # reward: (n_actors * n_agents,)
             # is_done: (n_actors * n_agents,)
             new_obs, reward, is_done, info = self.vec_env.step(action)
             # reward = reward * (1 - is_done)
+
+            self.writer.add_scalar('play_steps/3', time.time() - play_step_t, self.num_env_steps_train)
+            play_step_t = time.time()
 
             self.num_env_steps_train += self.num_actors
 
@@ -304,6 +308,8 @@ class VDNAgent:
             # print(len(self.exp_buffer))
             self.current_obs = next_obs
 
+            self.writer.add_scalar('play_steps/4', time.time() - play_step_t, self.num_env_steps_train)
+
             break
         #
         if all(self.is_done):
@@ -363,10 +369,12 @@ class VDNAgent:
         start_time = time.time()
         total_time = 0
         self.load_weights_into_target_network()
-        for _ in range(0, self.config['num_steps_fill_buffer']):
-            print(_)
+        for _ in range(0, max(1, int(self.config['num_steps_fill_buffer'] / self.num_actors))):
+            print("Samples Stored: {}".format(len(self.exp_buffer)))
             self.play_steps(self.steps_num, self.epsilon)
         steps_per_epoch = self.config['steps_per_epoch']
+        steps_per_epoch = max(1, (steps_per_epoch // self.num_actors))
+        print("Updated steps_per_epoch : {}".format(steps_per_epoch))
         num_epochs_to_copy = self.config['num_epochs_to_copy']
         frame = 0
         play_time = 0
@@ -398,7 +406,7 @@ class VDNAgent:
             play_time += t_play_end - t_play_start
 
             # train
-            frame = frame + steps_per_epoch
+            frame = frame + (steps_per_epoch * self.num_actors)
             t_start = time.time()
             # if self.is_prioritized:
             #     batch, idxes = self.sample_prioritized_batch(self.exp_buffer, batch_size=self.batch_size,
@@ -422,6 +430,8 @@ class VDNAgent:
                     tr_helpers.free_mem()
                 sum_time = update_time + play_time
                 print('frames per seconds: ', 1000 / (sum_time))
+                print('Update time: ', update_time)
+                print('Play time Avg: ', play_time)
                 self.writer.add_scalar('performance/fps', 1000 / sum_time, frame)
                 self.writer.add_scalar('performance/upd_time', update_time, frame)
                 self.writer.add_scalar('performance/play_time', play_time, frame)
