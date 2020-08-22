@@ -44,7 +44,7 @@ params:
         scale: 2
       regularizer:
         name: 'None'
-    mix_with_state: False
+    mix_with_state: True
 
   config:
     reward_shaper:
@@ -58,7 +58,7 @@ params:
     epsilon_decay_frames: 100000
     num_epochs_to_copy: 10000
     env_name:  smac_cnn
-    name: 3s_vs_5z
+    name: 8m
     is_double: True
     score_to_win: 20
     num_steps_fill_buffer: 10000
@@ -77,10 +77,10 @@ params:
     grad_norm: 10
     truncate_grads: True
     num_actors: 5
-    mix_with_state: False
+    mix_with_state: True
 
     env_config:
-      name: 3s_vs_5z
+      name: 8m
       frames: 4
       transpose: True
       random_invalid_step: False

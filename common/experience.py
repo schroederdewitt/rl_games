@@ -20,6 +20,7 @@ class ReplayBufferCentralState(object):
         self._actions = np.zeros((size,) + (n_agents,), dtype=np.int32)
         self._dones = np.zeros(size, dtype=np.bool)
         self._states = np.zeros((size,) + st_space.shape, dtype=st_space.dtype)
+        self._next_states = np.zeros((size,) + st_space.shape, dtype=st_space.dtype)
 
         self._maxsize = size
         self._next_idx = 0
@@ -28,7 +29,7 @@ class ReplayBufferCentralState(object):
     def __len__(self):
         return self._curr_size
 
-    def add(self, obs_t, action, state_t, reward, obs_tp1, done):
+    def add(self, obs_t, action, state_t, reward, obs_tp1, next_state_tp1, done):
         # print("CAlled")
         self._curr_size = min(self._curr_size + 1, self._maxsize)
 
@@ -38,28 +39,35 @@ class ReplayBufferCentralState(object):
         self._actions[self._next_idx] = action
         self._dones[self._next_idx] = done
         self._states[self._next_idx] = state_t
+        self._next_states[self._next_idx] = next_state_tp1
 
         self._next_idx = (self._next_idx + 1) % self._maxsize
         # print(self._curr_size)
 
     def _get(self, idx):
-        return self._obses[idx], self._actions[idx], self._states[idx], self._rewards[idx], self._next_obses[idx], self._dones[idx]
+        return self._obses[idx], self._actions[idx], self._states[idx], self._rewards[idx], self._next_obses[idx], \
+               self._next_states[idx], self._dones[idx]
 
     def _encode_sample(self, idxes):
         batch_size = len(idxes)
-        obses_t, actions, states_t, rewards, obses_tp1, dones = [None] * batch_size, [None] * batch_size, [None] * batch_size, [None] * batch_size, [None] * batch_size, [None] * batch_size
+        obses_t, actions, states_t, rewards, obses_tp1, states_tp1, dones = [None] * batch_size, [None] * batch_size, \
+                                                                            [None] * batch_size, [None] * batch_size, \
+                                                                            [None] * batch_size, [None] * batch_size, \
+                                                                            [None] * batch_size
         it = 0
         for i in idxes:
             data = self._get(i)
-            obs_t, action, state, reward, obs_tp1, done = data
+            obs_t, action, state, reward, obs_tp1, state_tp1, done = data
             obses_t[it] = np.array(obs_t, copy=False)
             actions[it] = np.array(action, copy=False)
             states_t[it] = np.array(state, copy=False)
             rewards[it] = reward
             obses_tp1[it] = np.array(obs_tp1, copy=False)
+            states_tp1[it] = np.array(state_tp1, copy=False)
             dones[it] = done
             it = it + 1
-        return np.array(obses_t), np.array(actions), np.array(states_t), np.array(rewards), np.array(obses_tp1), np.array(dones)
+        return np.array(obses_t), np.array(actions), np.array(states_t), np.array(rewards), np.array(obses_tp1), \
+               np.array(states_tp1), np.array(dones)
 
     def sample(self, batch_size):
         """Sample a batch of experiences.

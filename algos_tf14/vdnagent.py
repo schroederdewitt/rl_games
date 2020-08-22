@@ -95,6 +95,8 @@ class VDNAgent:
         self.obs_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.obs_shape, name='obs_ph')
         self.state_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.state_shape,
                                                  name='state_ph')
+        self.next_state_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.state_shape,
+                                                 name='next_state_ph')
         self.actions_ph = tf.compat.v1.placeholder(tf.int32, shape=[None, 1], name='actions_ph')
         self.rewards_ph = tf.compat.v1.placeholder(tf.float32, shape=[None, 1], name='rewards_ph')
         self.next_obs_ph = tf.compat.v1.placeholder(observation_space.dtype, shape=(None,) + self.obs_shape,
@@ -106,6 +108,7 @@ class VDNAgent:
         self.gamma = self.config['gamma']
         self.gamma_step = self.gamma ** self.steps_num
         self.grad_norm = config['grad_norm']
+
         self.input_obs = self.obs_ph
         self.input_next_obs = self.next_obs_ph
         if observation_space.dtype == np.uint8:
@@ -153,7 +156,10 @@ class VDNAgent:
             'is_double': self.config['is_double'],
             'actions_ph': self.actions_ph,
             'batch_size_ph': self.batch_size_ph,
-            'n_agents': self.n_agents
+            'n_agents': self.n_agents,
+            'mix_with_state': self.config['mix_with_state'],
+            'state_ph': self.state_ph,
+            'next_state_ph': self.next_state_ph
         }
 
         # (bs, n_agents, n_actions), (bs, 1), (bs, 1)
@@ -304,7 +310,7 @@ class VDNAgent:
             for _ in range(self.num_actors):
                 if not self.is_done[_]:
                     self.exp_buffer.add(self.current_obs[_], current_action[_], current_st[_],
-                                        steps_rewards[_], new_obs[_], copy.deepcopy(self.is_done[_]))
+                                        steps_rewards[_], new_obs[_], state[_], copy.deepcopy(self.is_done[_]))
             # print(len(self.exp_buffer))
             self.current_obs = next_obs
 
@@ -326,18 +332,19 @@ class VDNAgent:
         self.sess.run(self.assigns_op)
 
     def sample_batch(self, exp_replay, batch_size):
-        obs_batch, act_batch, st_batch, reward_batch, next_obs_batch, is_done_batch = exp_replay.sample(batch_size)
+        obs_batch, act_batch, st_batch, reward_batch, next_obs_batch, next_state_batch, is_done_batch = exp_replay.sample(batch_size)
         obs_batch = obs_batch.reshape((batch_size * self.n_agents,) + self.obs_shape)
         act_batch = act_batch.reshape((batch_size * self.n_agents, 1))
         st_batch = st_batch.reshape((batch_size,) + self.state_shape)
         next_obs_batch = next_obs_batch.reshape((batch_size * self.n_agents,) + self.obs_shape)
+        next_state_batch = next_state_batch.reshape((batch_size,) + self.state_shape)
         reward_batch = reward_batch.reshape((batch_size, 1))
         is_done_batch = is_done_batch.reshape((batch_size, 1))
 
         return {
             self.obs_ph: obs_batch, self.actions_ph: act_batch, self.state_ph: st_batch,
             self.rewards_ph: reward_batch, self.is_done_ph: is_done_batch, self.next_obs_ph: next_obs_batch,
-            self.batch_size_ph: batch_size
+            self.batch_size_ph: batch_size, self.next_state_ph: next_state_batch
         }
 
     #

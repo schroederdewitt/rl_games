@@ -44,7 +44,7 @@ params:
         scale: 2
       regularizer:
         name: 'None'
-    mix_with_state: False
+    mix_with_state: True
 
   config:
     reward_shaper:
@@ -77,7 +77,7 @@ params:
     grad_norm: 10
     truncate_grads: True
     num_actors: 5
-    mix_with_state: False
+    mix_with_state: True
 
     env_config:
       name: 3s_vs_5z

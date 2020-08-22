@@ -274,6 +274,9 @@ class VDN_DQN(BaseModel):
         actions_ph = dict['actions_ph']
         batch_size_ph = dict['batch_size_ph']
         n_agents = dict['n_agents']
+        mix_with_state = dict['mix_with_state']
+        state_ph = dict['state_ph']
+        next_state_ph = dict['next_state_ph']
 
         '''
         TODO: fix is_train
@@ -281,13 +284,15 @@ class VDN_DQN(BaseModel):
         # is_train = name == 'agent'
 
         # (bs * n_agents, n_actions)
-        qvalues = self.network(name='agent', inputs=input_obs, actions_num=actions_num, is_train=True, reuse=False)
+        qvalues, state_out = self.network(name='agent', inputs=input_obs, actions_num=actions_num, is_train=True,
+                                          reuse=False, state_inputs=state_ph)
         # (bs, n_agents, n_actions)
         qvalues_reshaped = tf.reshape(qvalues, [batch_size_ph, n_agents, actions_num])
         # (bs * n_agents, n_actions)
-        target_qvalues = tf.stop_gradient(
-            self.network(name='target', inputs=input_next_obs, actions_num=actions_num, is_train=False, reuse=False))
+        target_qvalues, target_state_out = self.network(name='target', inputs=input_next_obs, actions_num=actions_num,
+                                                        is_train=False, reuse=False, state_inputs=next_state_ph)
         # (bs, n_agents, n_actions)
+        target_qvalues = tf.stop_gradient(target_qvalues)
         target_qvalues = tf.reshape(target_qvalues, [batch_size_ph, n_agents, actions_num])
 
         # (bs * n_agents, 1, actions_num)
@@ -298,8 +303,9 @@ class VDN_DQN(BaseModel):
 
         if is_double:
             # (bs * n_agents, n_actions)
-            next_qvalues = tf.stop_gradient(
-                self.network(name='agent', inputs=input_next_obs, actions_num=actions_num, is_train=True, reuse=True))
+            next_qvalues, _ = self.network(name='agent', inputs=input_next_obs, actions_num=actions_num, is_train=True,
+                             reuse=True, state_inputs=next_state_ph)
+            next_qvalues = tf.stop_gradient(next_qvalues)
             # (bs * n_agents, 1)
             next_selected_actions = tf.argmax(next_qvalues, axis=1)
             # (bs*n_agents, 1, n_actions)
@@ -313,11 +319,20 @@ class VDN_DQN(BaseModel):
             # (bs, n_agents, 1)
             next_obs_values_target = tf.stop_gradient(tf.reduce_max(target_qvalues, axis=2))
 
-        ##MIXING:
-        # (bs, 1)
-        current_action_qvalues_mix = tf.reshape(tf.reduce_sum(current_action_qvalues, axis=1), [batch_size_ph, 1])
-        # (bs, 1, 1)
-        target_action_qvalues_mix = tf.reshape(tf.reduce_sum(next_obs_values_target, axis=1), [batch_size_ph, 1])
+        if mix_with_state:
+            ##MIXING:
+            # (bs, 1)
+            current_action_qvalues_mix = tf.reshape(tf.reduce_sum(current_action_qvalues, axis=1), [batch_size_ph, 1]) + \
+                                         state_out
+            # (bs, 1, 1)
+            target_action_qvalues_mix = tf.reshape(tf.reduce_sum(next_obs_values_target, axis=1), [batch_size_ph, 1]) + \
+                                        target_state_out
+        else:
+            ##MIXING:
+            # (bs, 1)
+            current_action_qvalues_mix = tf.reshape(tf.reduce_sum(current_action_qvalues, axis=1), [batch_size_ph, 1])
+            # (bs, 1, 1)
+            target_action_qvalues_mix = tf.reshape(tf.reduce_sum(next_obs_values_target, axis=1), [batch_size_ph, 1])
 
         return qvalues, current_action_qvalues_mix, target_action_qvalues_mix
 
