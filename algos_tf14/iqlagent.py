@@ -300,7 +300,7 @@ class IQLAgent:
             next_obs, current_action, _, done_info_ = self.obs_act_rew[0]
             self.current_obs = np.reshape(self.current_obs, ((self.num_actors, self.n_agents,) + self.obs_shape))
             for _ in range(self.num_actors):
-                if not self.is_done[_]:
+                if not done_info_[_]:
                     self.exp_buffer.add(self.current_obs[_], current_action[_],
                                         steps_rewards[_], new_obs[_], copy.deepcopy(self.is_done[_]))
             # print(len(self.exp_buffer))
