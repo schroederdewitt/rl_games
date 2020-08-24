@@ -357,12 +357,13 @@ class IQL_DQN(BaseModel):
         # is_train = name == 'agent'
 
         # (bs * n_agents, n_actions)
-        qvalues = self.network(name='agent', inputs=input_obs, actions_num=actions_num, is_train=True, reuse=False)
+        qvalues, state_out = self.network(name='agent', inputs=input_obs, actions_num=actions_num, is_train=True, reuse=False)
         # (bs, n_agents, n_actions)
         qvalues_reshaped = tf.reshape(qvalues, [batch_size_ph, n_agents, actions_num])
         # (bs * n_agents, n_actions)
-        target_qvalues = tf.stop_gradient(
-            self.network(name='target', inputs=input_next_obs, actions_num=actions_num, is_train=False, reuse=False))
+        target_qvalues, target_state_out = self.network(name='target', inputs=input_next_obs, actions_num=actions_num,
+                                                        is_train=False, reuse=False)
+        target_qvalues = tf.stop_gradient(target_qvalues)
         # (bs, n_agents, n_actions)
         target_qvalues = tf.reshape(target_qvalues, [batch_size_ph, n_agents, actions_num])
 
@@ -374,8 +375,9 @@ class IQL_DQN(BaseModel):
 
         if is_double:
             # (bs * n_agents, n_actions)
-            next_qvalues = tf.stop_gradient(
-                self.network(name='agent', inputs=input_next_obs, actions_num=actions_num, is_train=True, reuse=True))
+            next_qvalues, _ = self.network(name='agent', inputs=input_next_obs, actions_num=actions_num,
+                                           is_train=True, reuse=True)
+            next_qvalues = tf.stop_gradient(next_qvalues)
             # (bs * n_agents, 1)
             next_selected_actions = tf.argmax(next_qvalues, axis=1)
             # (bs*n_agents, 1, n_actions)
