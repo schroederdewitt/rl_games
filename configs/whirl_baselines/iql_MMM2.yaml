@@ -43,7 +43,8 @@ params:
         name: variance_scaling_initializer
         scale: 2
       regularizer:
-        name: 'None'
+      name: 'None'
+    mix_with_state: False
 
   config:
     reward_shaper:
