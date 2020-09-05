@@ -1,4 +1,4 @@
-FROM rl_games_cpu
+FROM tarun018/rl_games_cpu
 # FROM ubuntu:16.04
 MAINTAINER Tarun Gupta
 

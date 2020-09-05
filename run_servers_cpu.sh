@@ -12,5 +12,5 @@ docker run \
     -v `pwd`:/pymarl \
     -v `pwd`/results:/results \
     -v `pwd`/runs:/runs \
-    -t tarun018/rl_games_cpu \
+    -t rl_games_cpu \
     ${@:2}
