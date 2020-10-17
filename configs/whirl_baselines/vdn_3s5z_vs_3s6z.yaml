@@ -50,7 +50,7 @@ params:
       scale_value: 0.1
     gamma: 0.99
     learning_rate: 0.0005
-    steps_per_epoch: 20
+    steps_per_epoch: 4
     batch_size: 64
     epsilon: 1.0
     min_epsilon: 0.05
@@ -60,7 +60,7 @@ params:
     name: 3s5z_vs_3s6z
     is_double: True
     score_to_win: 20
-    num_steps_fill_buffer: 10000
+    num_steps_fill_buffer: 100000
     replay_buffer_type: 'normal'
     replay_buffer_size: 1000000
     priority_beta: 0.4
@@ -72,11 +72,10 @@ params:
     atoms_num: 1
     games_to_track: 20
     lr_schedule: None
-    max_epochs: 10000000
+    max_epochs: 100000
     grad_norm: 10
     mix_with_state: False
     truncate_grads: True
-    num_actors: 5
 
     env_config:
       name: 3s5z_vs_3s6z

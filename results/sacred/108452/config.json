@@ -1,0 +1,105 @@
+{
+  "label": "2s3z_tf",
+  "load_checkpoint": false,
+  "load_path": null,
+  "name": "2s3z_tf",
+  "params": {
+    "algo": {
+      "name": "a2c_discrete"
+    },
+    "config": {
+      "clip_value": true,
+      "critic_coef": 2,
+      "e_clip": 0.2,
+      "entropy_coef": 0.005,
+      "env_config": {
+        "frames": 4,
+        "name": "2s3z",
+        "random_invalid_step": false,
+        "transpose": true
+      },
+      "env_name": "smac_cnn",
+      "gamma": 0.99,
+      "grad_norm": 0.5,
+      "ignore_dead_batches": false,
+      "learning_rate": "1e-4",
+      "lr_schedule": "None",
+      "lr_threshold": 0.05,
+      "mini_epochs": 1,
+      "minibatch_size": 4096,
+      "name": "2s3z",
+      "normalize_advantage": true,
+      "normalize_input": false,
+      "num_actors": 8,
+      "ppo": true,
+      "reward_shaper": {
+        "scale_value": 1
+      },
+      "score_to_win": 20,
+      "seq_len": 2,
+      "steps_num": 128,
+      "tau": 0.95,
+      "truncate_grads": true,
+      "use_action_masks": true
+    },
+    "load_checkpoint": false,
+    "load_path": "nn/2s3z",
+    "model": {
+      "name": "discrete_a2c"
+    },
+    "network": {
+      "cnn": {
+        "activation": "relu",
+        "convs": [
+          {
+            "filters": 64,
+            "kernel_size": 3,
+            "padding": "same",
+            "strides": 2
+          },
+          {
+            "filters": 128,
+            "kernel_size": 3,
+            "padding": "valid",
+            "strides": 1
+          },
+          {
+            "filters": 256,
+            "kernel_size": 3,
+            "padding": "valid",
+            "strides": 1
+          }
+        ],
+        "initializer": {
+          "name": "variance_scaling_initializer",
+          "scale": 2
+        },
+        "regularizer": {
+          "name": "None"
+        },
+        "type": "conv1d"
+      },
+      "mlp": {
+        "activation": "relu",
+        "initializer": {
+          "name": "variance_scaling_initializer",
+          "scale": 2
+        },
+        "regularizer": {
+          "name": "None"
+        },
+        "units": [
+          256,
+          128
+        ]
+      },
+      "name": "actor_critic",
+      "separate": true,
+      "space": {
+        "discrete": null
+      }
+    }
+  },
+  "seed": 151705796,
+  "train": true
+}

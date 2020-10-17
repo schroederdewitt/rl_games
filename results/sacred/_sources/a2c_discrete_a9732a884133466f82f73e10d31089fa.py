@@ -437,8 +437,8 @@ class A2CAgent:
                     for i in range(0, num_minibatches):
                         batch = range(i * minibatch_size, (i + 1) * minibatch_size)
                         dict = {self.obs_ph: obses[batch], self.actions_ph : actions[batch], self.rewards_ph : returns[batch], 
-                                self.advantages_ph : advantages[batch], self.old_logp_actions_ph : neglogpacs[batch], self.old_values_ph : values[batch],}
-                        #        self.central_states_ph: central_states[batch]}
+                                self.advantages_ph : advantages[batch], self.old_logp_actions_ph : neglogpacs[batch], self.old_values_ph : values[batch],
+                                self.central_states_ph: central_states[batch]}
                         dict[self.learning_rate_ph] = last_lr
                         run_ops = [self.actor_loss, self.critic_loss, self.entropy, self.kl_approx, self.current_lr, self.lr_multiplier, self.train_op]
                             

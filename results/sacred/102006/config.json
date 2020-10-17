@@ -1,0 +1,108 @@
+{
+  "label": "vdn_rf_MMM2_a",
+  "load_checkpoint": false,
+  "load_path": null,
+  "name": "vdn_tf_MMM2_a",
+  "params": {
+    "algo": {
+      "name": "vdn"
+    },
+    "config": {
+      "atoms_num": 1,
+      "batch_size": 64,
+      "beta_decay_frames": 100000,
+      "env_config": {
+        "frames": 4,
+        "name": "MMM2",
+        "random_invalid_step": false,
+        "transpose": true,
+        "use_central_state": true
+      },
+      "env_name": "smac_cnn",
+      "epsilon": 1.0,
+      "epsilon_decay_frames": 100000,
+      "games_to_track": 20,
+      "gamma": 0.99,
+      "grad_norm": 10,
+      "is_double": true,
+      "learning_rate": 0.0005,
+      "lr_schedule": "None",
+      "max_beta": 1,
+      "max_epochs": 10000000,
+      "min_epsilon": 0.05,
+      "mix_with_state": false,
+      "name": "MMM2",
+      "num_actors": 5,
+      "num_epochs_to_copy": 10000,
+      "num_steps_fill_buffer": 10000,
+      "priority_alpha": 0.6,
+      "priority_beta": 0.4,
+      "replay_buffer_size": 1000000,
+      "replay_buffer_type": "normal",
+      "reward_shaper": {
+        "scale_value": 0.1
+      },
+      "score_to_win": 20,
+      "steps_num": 10,
+      "steps_per_epoch": 20,
+      "truncate_grads": true
+    },
+    "load_checkpoint": false,
+    "load_path": "",
+    "model": {
+      "name": "vdn"
+    },
+    "network": {
+      "atoms": 1,
+      "cnn": {
+        "activation": "relu",
+        "convs": [
+          {
+            "filters": 64,
+            "kernel_size": 3,
+            "padding": "same",
+            "strides": 2
+          },
+          {
+            "filters": 128,
+            "kernel_size": 3,
+            "padding": "valid",
+            "strides": 1
+          },
+          {
+            "filters": 256,
+            "kernel_size": 3,
+            "padding": "valid",
+            "strides": 1
+          }
+        ],
+        "initializer": {
+          "name": "variance_scaling_initializer",
+          "scale": 2
+        },
+        "regularizer": {
+          "name": "None"
+        },
+        "type": "conv1d"
+      },
+      "dueling": true,
+      "mlp": {
+        "activation": "relu",
+        "initializer": {
+          "name": "variance_scaling_initializer",
+          "scale": 2
+        },
+        "regularizer": {
+          "name": "None"
+        },
+        "units": [
+          256
+        ]
+      },
+      "name": "dqn",
+      "noisy": false
+    }
+  },
+  "seed": 903866302,
+  "train": true
+}

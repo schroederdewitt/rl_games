@@ -1,0 +1,442 @@
+{
+  "whirl/episode_lengths/mean": [
+    61.857142857142854,
+    63.827586206896555,
+    61.32608695652174,
+    59.69230769230769,
+    58.48235294117647,
+    58.15
+  ],
+  "whirl/episode_lengths/mean_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/episode_lengths/time": [
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 61.857142857142854
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 63.827586206896555
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 61.32608695652174
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 59.69230769230769
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 58.48235294117647
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 58.15
+    }
+  ],
+  "whirl/episode_lengths/time_T": [
+    3.5270400047302246,
+    7.35159158706665,
+    10.71893048286438,
+    14.179275751113892,
+    17.572102308273315,
+    21.15356683731079
+  ],
+  "whirl/epochs": [
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 2.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 3.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 4.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 5.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 6.0
+    }
+  ],
+  "whirl/epochs_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/info/e_clip": [
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.2
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.2
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.2
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.2
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.2
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.2
+    }
+  ],
+  "whirl/info/e_clip_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/info/kl": [
+    1.1751537322998047,
+    1.1004607677459717,
+    1.1119550466537476,
+    1.2001289129257202,
+    1.0898699760437012,
+    1.128831386566162
+  ],
+  "whirl/info/kl_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/info/last_lr": [
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 9.999999747378752e-05
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 9.999999747378752e-05
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 9.999999747378752e-05
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 9.999999747378752e-05
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 9.999999747378752e-05
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 9.999999747378752e-05
+    }
+  ],
+  "whirl/info/last_lr_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/info/lr_mul": [
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    },
+    {
+      "dtype": "float32",
+      "py/object": "numpy.float32",
+      "value": 1.0
+    }
+  ],
+  "whirl/info/lr_mul_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/losses/a_loss": [
+    0.15045475959777832,
+    0.17284199595451355,
+    0.17051705718040466,
+    0.21195833384990692,
+    0.11690883338451385,
+    0.04484535753726959
+  ],
+  "whirl/losses/a_loss_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/losses/c_loss": [
+    0.5679444670677185,
+    0.86492919921875,
+    0.6105165481567383,
+    0.17939157783985138,
+    0.21517491340637207,
+    0.3215758502483368
+  ],
+  "whirl/losses/c_loss_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/losses/entropy": [
+    2.1325736045837402,
+    1.9143908023834229,
+    1.5576913356781006,
+    1.4570447206497192,
+    1.5270040035247803,
+    1.6993787288665771
+  ],
+  "whirl/losses/entropy_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/performance/fps": [
+    290.3285121533995,
+    286.8833461313002,
+    304.2945315766254,
+    296.17161286220704,
+    302.06461123320383,
+    286.1323864355561
+  ],
+  "whirl/performance/fps_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/performance/play_time": [
+    2.979525566101074,
+    3.144230365753174,
+    2.9361608028411865,
+    3.030425786972046,
+    2.9654104709625244,
+    3.1416330337524414
+  ],
+  "whirl/performance/play_time_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/performance/upd_time": [
+    0.547513484954834,
+    0.42516469955444336,
+    0.4289999008178711,
+    0.4270291328430176,
+    0.4245927333831787,
+    0.4371299743652344
+  ],
+  "whirl/performance/upd_time_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/rewards/mean": [
+    3.0032920989624907,
+    2.7734540550953577,
+    2.5289045421423366,
+    2.3278685002148696,
+    2.1839796253697012,
+    2.1226675977653633
+  ],
+  "whirl/rewards/mean_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/rewards/time": [
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 3.0032920989624907
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 2.7734540550953577
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 2.5289045421423366
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 2.3278685002148696
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 2.1839796253697012
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 2.1226675977653633
+    }
+  ],
+  "whirl/rewards/time_T": [
+    3.5270400047302246,
+    7.35159158706665,
+    10.71893048286438,
+    14.179275751113892,
+    17.572102308273315,
+    21.15356683731079
+  ],
+  "whirl/win_rate/mean": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "whirl/win_rate/mean_T": [
+    1024,
+    2048,
+    3072,
+    4096,
+    5120,
+    6144
+  ],
+  "whirl/win_rate/time": [
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.0
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.0
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.0
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.0
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.0
+    },
+    {
+      "dtype": "float64",
+      "py/object": "numpy.float64",
+      "value": 0.0
+    }
+  ],
+  "whirl/win_rate/time_T": [
+    3.5270400047302246,
+    7.35159158706665,
+    10.71893048286438,
+    14.179275751113892,
+    17.572102308273315,
+    21.15356683731079
+  ]
+}

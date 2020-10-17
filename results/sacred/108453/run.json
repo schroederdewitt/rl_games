@@ -1,0 +1,196 @@
+{
+  "artifacts": [],
+  "command": "my_main",
+  "experiment": {
+    "base_dir": "/pymarl",
+    "dependencies": [
+      "munch==2.5.0",
+      "numpy==1.18.5",
+      "pymongo==3.11.0",
+      "PyYAML==5.3.1",
+      "ray==0.6.6",
+      "sacred==0.8.1",
+      "tensorflow==1.15.3",
+      "torch==1.5.0"
+    ],
+    "mainfile": "tf14_runner.py",
+    "name": "pymarl",
+    "repositories": [
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "baacf4d1aaef6169bd40187c2b15c44205252de3",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      }
+    ],
+    "sources": [
+      [
+        "algos_tf14/a2c_continuous.py",
+        "_sources/a2c_continuous_4a6a058ba7e76499dd6269804d0c6fcd.py"
+      ],
+      [
+        "algos_tf14/a2c_discrete.py",
+        "_sources/a2c_discrete_a9732a884133466f82f73e10d31089fa.py"
+      ],
+      [
+        "algos_tf14/dqnagent.py",
+        "_sources/dqnagent_ed68ebe656239b67f9e9f04ddd351d0c.py"
+      ],
+      [
+        "algos_tf14/iqlagent.py",
+        "_sources/iqlagent_33315c25c6a9c3351713aefa2687734f.py"
+      ],
+      [
+        "algos_tf14/model_builder.py",
+        "_sources/model_builder_6ae9cce94d66b74249405d5b9d506a8b.py"
+      ],
+      [
+        "algos_tf14/network_builder.py",
+        "_sources/network_builder_101a028bc26e7ce72800719c7c2b096f.py"
+      ],
+      [
+        "algos_tf14/vdnagent.py",
+        "_sources/vdnagent_dab75affd463cf72d1b08e192adafc16.py"
+      ],
+      [
+        "common/env_configurations.py",
+        "_sources/env_configurations_cf240b2bf041927b8276dc444530d379.py"
+      ],
+      [
+        "common/experiment.py",
+        "_sources/experiment_f78d3cc79b69766e71f9160f97b8d12a.py"
+      ],
+      [
+        "common/tr_helpers.py",
+        "_sources/tr_helpers_9c3d43b1d3aab5956b4dd26b58a70c6e.py"
+      ],
+      [
+        "tf14_runner.py",
+        "_sources/tf14_runner_e337758af62d392df81a4670842d49b5.py"
+      ],
+      [
+        "utils/__init__.py",
+        "_sources/__init___d41d8cd98f00b204e9800998ecf8427e.py"
+      ],
+      [
+        "utils/logging.py",
+        "_sources/logging_35a5d480ff8d4889ba1e8320767e94ab.py"
+      ]
+    ]
+  },
+  "fail_trace": [
+    "Traceback (most recent call last):\n",
+    "  File \"/usr/local/lib/python3.6/dist-packages/sacred/config/captured_function.py\", line 42, in captured_function\n    result = wrapped(*args, **kwargs)\n",
+    "  File \"tf14_runner.py\", line 232, in my_main\n    runner.run(_config)\n",
+    "  File \"tf14_runner.py\", line 159, in run\n    self.run_train()\n",
+    "  File \"tf14_runner.py\", line 146, in run_train\n    agent.train()\n",
+    "  File \"/pymarl/algos_tf14/a2c_discrete.py\", line 441, in train\n    self.central_states_ph: central_states[batch]}\n",
+    "AttributeError: 'A2CAgent' object has no attribute 'central_states_ph'\n"
+  ],
+  "heartbeat": "2020-10-17T22:02:09.854126",
+  "host": {
+    "ENV": {},
+    "cpu": "Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz",
+    "hostname": "c510bf8c71ed",
+    "os": [
+      "Linux",
+      "Linux-4.4.0-104-generic-x86_64-with-Ubuntu-18.04-bionic"
+    ],
+    "python_version": "3.6.9"
+  },
+  "meta": {
+    "command": "my_main",
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false,
+      "COMMAND": null,
+      "UPDATE": [
+        "name=2s3z_tf",
+        "label=2s3z_tf"
+      ],
+      "help": false,
+      "with": true
+    }
+  },
+  "resources": [],
+  "result": null,
+  "start_time": "2020-10-17T22:01:46.461936",
+  "status": "FAILED",
+  "stop_time": "2020-10-17T22:02:09.861544"
+}

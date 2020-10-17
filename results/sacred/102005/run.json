@@ -1,0 +1,201 @@
+{
+  "artifacts": [],
+  "command": "my_main",
+  "experiment": {
+    "base_dir": "/pymarl",
+    "dependencies": [
+      "munch==2.5.0",
+      "numpy==1.18.5",
+      "pymongo==3.11.0",
+      "PyYAML==5.3.1",
+      "ray==0.6.6",
+      "sacred==0.8.1",
+      "tensorflow==1.15.3",
+      "torch==1.5.0"
+    ],
+    "mainfile": "tf14_runner.py",
+    "name": "pymarl",
+    "repositories": [
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      },
+      {
+        "commit": "7f3f7b7ea7cf283bdbe5e2016bed28b0b9355207",
+        "dirty": true,
+        "url": "git@github.com:schroederdewitt/rl_games.git"
+      }
+    ],
+    "sources": [
+      [
+        "algos_tf14/a2c_continuous.py",
+        "_sources/a2c_continuous_4a6a058ba7e76499dd6269804d0c6fcd.py"
+      ],
+      [
+        "algos_tf14/a2c_discrete.py",
+        "_sources/a2c_discrete_d8aee0459aeb69f5e77f9489a99eaeda.py"
+      ],
+      [
+        "algos_tf14/dqnagent.py",
+        "_sources/dqnagent_ed68ebe656239b67f9e9f04ddd351d0c.py"
+      ],
+      [
+        "algos_tf14/iqlagent.py",
+        "_sources/iqlagent_772d15a9ebf8eb15c9315e41954fd45c.py"
+      ],
+      [
+        "algos_tf14/model_builder.py",
+        "_sources/model_builder_6ae9cce94d66b74249405d5b9d506a8b.py"
+      ],
+      [
+        "algos_tf14/network_builder.py",
+        "_sources/network_builder_101a028bc26e7ce72800719c7c2b096f.py"
+      ],
+      [
+        "algos_tf14/vdnagent.py",
+        "_sources/vdnagent_dab75affd463cf72d1b08e192adafc16.py"
+      ],
+      [
+        "common/env_configurations.py",
+        "_sources/env_configurations_cf240b2bf041927b8276dc444530d379.py"
+      ],
+      [
+        "common/experiment.py",
+        "_sources/experiment_f78d3cc79b69766e71f9160f97b8d12a.py"
+      ],
+      [
+        "common/tr_helpers.py",
+        "_sources/tr_helpers_9c3d43b1d3aab5956b4dd26b58a70c6e.py"
+      ],
+      [
+        "tf14_runner.py",
+        "_sources/tf14_runner_e337758af62d392df81a4670842d49b5.py"
+      ],
+      [
+        "utils/__init__.py",
+        "_sources/__init___d41d8cd98f00b204e9800998ecf8427e.py"
+      ],
+      [
+        "utils/logging.py",
+        "_sources/logging_35a5d480ff8d4889ba1e8320767e94ab.py"
+      ]
+    ]
+  },
+  "fail_trace": [
+    "Traceback (most recent call last):\n",
+    "  File \"/usr/local/lib/python3.6/dist-packages/sacred/config/captured_function.py\", line 42, in captured_function\n    result = wrapped(*args, **kwargs)\n",
+    "  File \"tf14_runner.py\", line 232, in my_main\n    runner.run(_config)\n",
+    "  File \"tf14_runner.py\", line 159, in run\n    self.run_train()\n",
+    "  File \"tf14_runner.py\", line 143, in run_train\n    agent = self.algo_factory.create(self.algo_name, sess=self.sess, base_name='run', observation_space=obs_space, action_space=action_space, config=self.config, logger=self.logger, central_state_space=central_state_space)\n",
+    "  File \"/pymarl/common/object_factory.py\", line 12, in create\n    return builder(**kwargs)\n",
+    "  File \"tf14_runner.py\", line 55, in <lambda>\n    self.algo_factory.register_builder('vdn', lambda **kwargs : vdnagent.VDNAgent(**kwargs))\n",
+    "  File \"/pymarl/algos_tf14/vdnagent.py\", line 66, in __init__\n    self.vec_env = vecenv.create_vec_env(self.env_name, self.num_actors, **self.env_config)\n",
+    "  File \"/pymarl/common/vecenv.py\", line 175, in create_vec_env\n    return RayVecSMACEnv(config_name, num_actors, **kwargs)\n",
+    "  File \"/pymarl/common/vecenv.py\", line 129, in __init__\n    self.num_agents = ray.get(res)\n",
+    "  File \"/usr/local/lib/python3.6/dist-packages/ray/worker.py\", line 2193, in get\n    raise value\n",
+    "ray.exceptions.RayTaskError: \u001b[36mray_worker\u001b[39m (pid=402, host=4efd40650979)\n  File \"/pymarl/common/vecenv.py\", line 40, in __init__\n    self.obs = self.env.reset()\n  File \"/pymarl/common/wrappers.py\", line 254, in reset\n    ob = self.env.reset()\n  File \"/pymarl/envs/smac_env.py\", line 36, in reset\n    obs, state = self.env.reset()\n  File \"/usr/local/lib/python3.6/dist-packages/smac/env/starcraft2/starcraft2.py\", line 347, in reset\n    self._launch()\n  File \"/usr/local/lib/python3.6/dist-packages/smac/env/starcraft2/starcraft2.py\", line 292, in _launch\n    self._run_config = run_configs.get(version=self.game_version)\n  File \"/usr/local/lib/python3.6/dist-packages/pysc2/run_configs/__init__.py\", line 40, in get\n    return max(configs.values(), key=lambda c: c.priority())(version=version)\n  File \"/usr/local/lib/python3.6/dist-packages/pysc2/run_configs/platforms.py\", line 179, in __init__\n    super(Linux, self).__init__(base_dir, \"SC2_x64\", version=version, env=env)\n  File \"/usr/local/lib/python3.6/dist-packages/pysc2/run_configs/platforms.py\", line 63, in __init__\n    data_dir=base_dir, tmp_dir=None, version=version, cwd=cwd, env=env)\n  File \"/usr/local/lib/python3.6/dist-packages/pysc2/run_configs/lib.py\", line 112, in __init__\n    self.version = self._get_version(version)\n  File \"/usr/local/lib/python3.6/dist-packages/pysc2/run_configs/lib.py\", line 220, in _get_version\n    versions = self.get_versions(containing=game_version)\n  File \"/usr/local/lib/python3.6/dist-packages/pysc2/run_configs/platforms.py\", line 94, in get_versions\n    for v in os.listdir(versions_dir)\nFileNotFoundError: [Errno 2] No such file or directory: '/pymarl/3rdparty/StarCraftII/Versions'\n\n"
+  ],
+  "heartbeat": "2020-08-21T14:59:08.630671",
+  "host": {
+    "ENV": {},
+    "cpu": "Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz",
+    "hostname": "4efd40650979",
+    "os": [
+      "Linux",
+      "Linux-4.4.0-104-generic-x86_64-with-Ubuntu-18.04-bionic"
+    ],
+    "python_version": "3.6.9"
+  },
+  "meta": {
+    "command": "my_main",
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false,
+      "COMMAND": null,
+      "UPDATE": [
+        "name=vdn_tf_MMM2_a",
+        "label=vdn_rf_MMM2_a"
+      ],
+      "help": false,
+      "with": true
+    }
+  },
+  "resources": [],
+  "result": null,
+  "start_time": "2020-08-21T14:59:05.273897",
+  "status": "FAILED",
+  "stop_time": "2020-08-21T14:59:08.636869"
+}
