@@ -113,3 +113,5 @@ db_config.private.yaml
 exp_scripts/
 .idea/
 analysis/
+
+db_config.private.yaml

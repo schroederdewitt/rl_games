@@ -272,6 +272,7 @@ if __name__ == '__main__':
     file_config = _get_config(params, "--file", "")
     config_dict = recursive_dict_update(config_dict, file_config)
 
+    config_dict["params"] = {"config":{}}
     config_dict["params"]["config"]["use_cuda"] = torch.cuda.is_available()
     config_dict["params"]["config"]["cuda_device"] = "cuda:0" if torch.cuda.is_available() else "cpu"
 

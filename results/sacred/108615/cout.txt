@@ -1,0 +1,86 @@
+[INFO 23:41:09] pymarl Running command 'my_main'
+[INFO 23:41:10] pymarl Started run with ID "108615"
+[DEBUG 23:41:10] pymarl Starting Heartbeat
+[DEBUG 23:41:10] my_main Started
+[INFO 23:41:21] my_main Experiment Parameters:
+[INFO 23:41:21] my_main 
+
+{   'label': '',
+    'load_checkpoint': False,
+    'load_path': None,
+    'name': '',
+    'params': {   'algo': {   'name': 'a2c_discrete'},
+                  'config': {   'clip_value': True,
+                                'critic_coef': 1,
+                                'cuda_device': 'cpu',
+                                'e_clip': 0.2,
+                                'entropy_coef': 0.001,
+                                'env_config': {   'frames': 1,
+                                                  'name': '3m',
+                                                  'random_invalid_step': False,
+                                                  'transpose': False},
+                                'env_name': 'smac',
+                                'gamma': 0.99,
+                                'grad_norm': 0.5,
+                                'ignore_dead_batches': False,
+                                'learning_rate': '5e-4',
+                                'lr_schedule': 'None',
+                                'lr_threshold': 0.05,
+                                'mini_epochs': 4,
+                                'minibatch_size': 1536,
+                                'name': '3m',
+                                'normalize_advantage': True,
+                                'normalize_input': True,
+                                'num_actors': 8,
+                                'ppo': True,
+                                'reward_shaper': {   'scale_value': 1},
+                                'score_to_win': 20,
+                                'seq_len': 2,
+                                'steps_num': 128,
+                                'tau': 0.95,
+                                'truncate_grads': True,
+                                'use_action_masks': True,
+                                'use_cuda': False},
+                  'load_checkpoint': False,
+                  'load_path': 'nn/3m',
+                  'model': {   'name': 'discrete_a2c'},
+                  'network': {   'mlp': {   'activation': 'relu',
+                                            'initializer': {   'name': 'variance_scaling_initializer',
+                                                               'scale': 2},
+                                            'regularizer': {   'name': 'None'},
+                                            'units': [   256,
+                                                         128]},
+                                 'name': 'actor_critic',
+                                 'separate': True,
+                                 'space': {   'discrete': None}}},
+    'seed': 783904158,
+    'train': True}
+
+Started to train
+2020-10-18 23:41:22,538	INFO services.py:1166 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+[2m[36m(pid=4337)[0m register custom network
+[2m[36m(pid=4337)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4337)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4336)[0m register custom network
+[2m[36m(pid=4340)[0m register custom network
+Env info:
+{'action_space': Discrete(9), 'observation_space': Box(30,), 'state_space': Box(48,), 'use_global_observations': False}
+[2m[36m(pid=4336)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4336)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4340)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4340)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4338)[0m register custom network
+[2m[36m(pid=4338)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4338)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4342)[0m register custom network
+[2m[36m(pid=4334)[0m register custom network
+[2m[36m(pid=4342)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4342)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4335)[0m register custom network
+[2m[36m(pid=4339)[0m register custom network
+[2m[36m(pid=4334)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4334)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4339)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4339)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=4335)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=4335)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))

@@ -39,8 +39,9 @@ class ModelA2C(BaseModel):
             action_masks = input_dict.pop('action_masks', None)
             prev_actions = input_dict.pop('prev_actions', None)
             logits, value, states = self.a2c_network(input_dict)
+            is_cuda = logits.is_cuda
             if not is_train:
-                u = torch.cuda.FloatTensor(logits.size()).uniform_()
+                u = (torch.cuda.FloatTensor if is_cuda else torch.FloatTensor)(logits.size()).uniform_()
                 rand_logits = logits - torch.log(-torch.log(u))
                 if action_masks is not None:
                     logits = logits - (1.0 - action_masks) * 1e10

@@ -21,7 +21,7 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
             'num_seqs' : self.num_actors * self.num_agents
         } 
         self.model = self.network.build(config)
-        self.model.to(self.config["cuda_device"])
+        self.model.cuda()
 
         self.init_rnn_from_model(self.model)
 
@@ -30,11 +30,11 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
         #self.optimizer = torch_ext.RangerQH(self.model.parameters(), float(self.last_lr))
 
         if self.normalize_input:
-            self.running_mean_std = RunningMeanStd(obs_shape).to(self.config["cuda_device"])
+            self.running_mean_std = RunningMeanStd(obs_shape).cuda()
 
         if self.has_central_value:
             self.central_value_net = central_value.CentralValueTrain(torch_ext.shape_whc_to_cwh(self.state_shape), self.num_agents, self.steps_num, self.num_actors, self.actions_num, self.central_value_config['network'], 
-                                    self.central_value_config, self.writer).to(self.config["cuda_device"])
+                                    self.central_value_config, self.writer).cuda()
 
         if self.has_curiosity:
             self.rnd_curiosity = rnd_curiosity.RNDCuriosityTrain(torch_ext.shape_whc_to_cwh(self.obs_shape), self.curiosity_config['network'], 
@@ -67,7 +67,7 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
 
     def get_masked_action_values(self, obs, action_masks):
         processed_obs = self._preproc_obs(obs['obs'])
-        action_masks = torch.Tensor(action_masks).to(self.config["cuda_device"])
+        action_masks = torch.Tensor(action_masks).cuda()
         input_dict = {
             'is_train': False,
             'prev_actions': None, 
@@ -168,7 +168,7 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
         a_loss = common_losses.actor_loss(old_action_log_probs_batch, action_log_probs, advantage, self.ppo, curr_e_clip)
 
         if self.has_central_value:
-            c_loss = torch.zeros(1).to(self.config["cuda_device"])
+            c_loss = torch.zeros(1).cuda()
         else:
             c_loss = common_losses.critic_loss(value_preds_batch, values, curr_e_clip, return_batch, self.clip_value)
 

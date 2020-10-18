@@ -212,7 +212,7 @@ def my_main(_run, _config, _log):
     runner.load(_config)
     runner.reset()
     # args = vars(arglist)
-
+    _config["use_cuda"] = torch.cuda.is_available()
     runner.run(_config)
 
     # runner.run(args)
@@ -271,9 +271,6 @@ if __name__ == '__main__':
                    "load_path": None}
     file_config = _get_config(params, "--file", "")
     config_dict = recursive_dict_update(config_dict, file_config)
-
-    config_dict["params"]["config"]["use_cuda"] = torch.cuda.is_available()
-    config_dict["params"]["config"]["cuda_device"] = "cuda:0" if torch.cuda.is_available() else "cpu"
 
     # now add all the config to sacred
     ex.add_config(config_dict)

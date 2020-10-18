@@ -1,0 +1,14 @@
+{
+  "label": "",
+  "load_checkpoint": false,
+  "load_path": null,
+  "name": "",
+  "params": {
+    "config": {
+      "cuda_device": "cpu",
+      "use_cuda": false
+    }
+  },
+  "seed": 803453724,
+  "train": true
+}

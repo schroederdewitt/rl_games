@@ -1,0 +1,281 @@
+[INFO 23:45:08] pymarl Running command 'my_main'
+[INFO 23:45:09] pymarl Started run with ID "108618"
+[DEBUG 23:45:09] pymarl Starting Heartbeat
+[DEBUG 23:45:09] my_main Started
+[INFO 23:45:09] my_main Experiment Parameters:
+[INFO 23:45:09] my_main 
+
+{   'label': '',
+    'load_checkpoint': False,
+    'load_path': None,
+    'name': '',
+    'params': {   'algo': {   'name': 'a2c_discrete'},
+                  'config': {   'clip_value': True,
+                                'critic_coef': 1,
+                                'cuda_device': 'cpu',
+                                'e_clip': 0.2,
+                                'entropy_coef': 0.001,
+                                'env_config': {   'frames': 1,
+                                                  'name': '3m',
+                                                  'random_invalid_step': False,
+                                                  'transpose': False},
+                                'env_name': 'smac',
+                                'gamma': 0.99,
+                                'grad_norm': 0.5,
+                                'ignore_dead_batches': False,
+                                'learning_rate': '5e-4',
+                                'lr_schedule': 'None',
+                                'lr_threshold': 0.05,
+                                'mini_epochs': 4,
+                                'minibatch_size': 1536,
+                                'name': '3m',
+                                'normalize_advantage': True,
+                                'normalize_input': True,
+                                'num_actors': 8,
+                                'ppo': True,
+                                'reward_shaper': {   'scale_value': 1},
+                                'score_to_win': 20,
+                                'seq_len': 2,
+                                'steps_num': 128,
+                                'tau': 0.95,
+                                'truncate_grads': True,
+                                'use_action_masks': True,
+                                'use_cuda': False},
+                  'load_checkpoint': False,
+                  'load_path': 'nn/3m',
+                  'model': {   'name': 'discrete_a2c'},
+                  'network': {   'mlp': {   'activation': 'relu',
+                                            'initializer': {   'name': 'variance_scaling_initializer',
+                                                               'scale': 2},
+                                            'regularizer': {   'name': 'None'},
+                                            'units': [   256,
+                                                         128]},
+                                 'name': 'actor_critic',
+                                 'separate': True,
+                                 'space': {   'discrete': None}}},
+    'seed': 278601597,
+    'train': True}
+
+Started to train
+2020-10-18 23:45:10,431	INFO services.py:1166 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+[2m[36m(pid=6281)[0m register custom network
+[2m[36m(pid=6281)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6281)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=6282)[0m register custom network
+[2m[36m(pid=6282)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6282)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+Env info:
+{'action_space': Discrete(9), 'observation_space': Box(30,), 'state_space': Box(48,), 'use_global_observations': False}
+[2m[36m(pid=6290)[0m register custom network
+[2m[36m(pid=6290)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6290)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+build mlp: 30
+build mlp: 30
+[2m[36m(pid=6289)[0m register custom network
+[2m[36m(pid=6291)[0m register custom network
+RunningMeanStd:  (30,)
+[2m[36m(pid=6289)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6289)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=6288)[0m register custom network
+[2m[36m(pid=6282)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6282)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6282)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 21280 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-renipxye/'
+[2m[36m(pid=6291)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6291)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=6290)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6290)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6290)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 18940 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-mv1s85me/'
+[2m[36m(pid=6283)[0m register custom network
+[2m[36m(pid=6288)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6288)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=6281)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6281)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6281)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 22196 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-7in3ic0n/'
+[2m[36m(pid=6282)[0m Starting up...
+[2m[36m(pid=6291)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6291)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6291)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 16311 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-p7v507vb/'
+[2m[36m(pid=6290)[0m Starting up...
+[2m[36m(pid=6283)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6283)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=6289)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6289)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6289)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 20925 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-xsu46d88/'
+[2m[36m(pid=6289)[0m Starting up...
+[2m[36m(pid=6288)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6288)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6288)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 19357 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-0m38_xzf/'
+[2m[36m(pid=6281)[0m Starting up...
+[2m[36m(pid=6281)[0m Startup Phase 1 complete
+[2m[36m(pid=6282)[0m Startup Phase 1 complete
+[2m[36m(pid=6291)[0m Starting up...
+[2m[36m(pid=6291)[0m Startup Phase 1 complete
+[2m[36m(pid=6290)[0m Startup Phase 1 complete
+[2m[36m(pid=6283)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6283)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6283)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 20153 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-mbj6tca4/'
+[2m[36m(pid=6289)[0m Startup Phase 1 complete
+[2m[36m(pid=6288)[0m Starting up...
+[2m[36m(pid=6288)[0m Startup Phase 1 complete
+[2m[36m(pid=6283)[0m Starting up...
+[2m[36m(pid=6292)[0m register custom network
+[2m[36m(pid=6283)[0m Startup Phase 1 complete
+[2m[36m(pid=6292)[0m /home_tools/venvs/rl_games/lib/python3.6/site-packages/gym/logger.py:30: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+[2m[36m(pid=6292)[0m   warnings.warn(colorize('%s: %s'%('WARN', msg % args), 'yellow'))
+[2m[36m(pid=6292)[0m Version: B60604 (SC2.4.01)
+[2m[36m(pid=6292)[0m Build: May  1 2018 19:24:12
+[2m[36m(pid=6292)[0m Command Line: '"/home/cs/StarCraftII/Versions/Base60321/SC2_x64" -listen 127.0.0.1 -port 21346 -dataDir /home/cs/StarCraftII/ -tempDir /tmp/sc-8vzzqswz/'
+[2m[36m(pid=6292)[0m Starting up...
+[2m[36m(pid=6292)[0m Startup Phase 1 complete
+[2m[36m(pid=6282)[0m Startup Phase 2 complete
+[2m[36m(pid=6282)[0m Creating stub renderer...
+[2m[36m(pid=6290)[0m Startup Phase 2 complete
+[2m[36m(pid=6290)[0m Creating stub renderer...
+[2m[36m(pid=6289)[0m Startup Phase 2 complete
+[2m[36m(pid=6289)[0m Creating stub renderer...
+[2m[36m(pid=6281)[0m Startup Phase 2 complete
+[2m[36m(pid=6281)[0m Creating stub renderer...
+[2m[36m(pid=6291)[0m Startup Phase 2 complete
+[2m[36m(pid=6291)[0m Creating stub renderer...
+[2m[36m(pid=6288)[0m Startup Phase 2 complete
+[2m[36m(pid=6288)[0m Creating stub renderer...
+[2m[36m(pid=6283)[0m Startup Phase 2 complete
+[2m[36m(pid=6283)[0m Creating stub renderer...
+[2m[36m(pid=6292)[0m Startup Phase 2 complete
+[2m[36m(pid=6292)[0m Creating stub renderer...
+[2m[36m(pid=6282)[0m Listening on: 127.0.0.1:21280
+[2m[36m(pid=6282)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6291)[0m Listening on: 127.0.0.1:16311
+[2m[36m(pid=6291)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6289)[0m Listening on: 127.0.0.1:20925
+[2m[36m(pid=6289)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6281)[0m Listening on: 127.0.0.1:22196
+[2m[36m(pid=6281)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6288)[0m Listening on: 127.0.0.1:19357
+[2m[36m(pid=6288)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6290)[0m Listening on: 127.0.0.1:18940
+[2m[36m(pid=6290)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6292)[0m Listening on: 127.0.0.1:21346
+[2m[36m(pid=6292)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6283)[0m Listening on: 127.0.0.1:20153
+[2m[36m(pid=6283)[0m Startup Phase 3 complete. Ready for commands.
+[2m[36m(pid=6282)[0m Requesting to join a single player game
+[2m[36m(pid=6282)[0m Configuring interface options
+[2m[36m(pid=6282)[0m Configure: raw interface enabled
+[2m[36m(pid=6282)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6282)[0m Configure: score interface disabled
+[2m[36m(pid=6282)[0m Configure: render interface disabled
+[2m[36m(pid=6282)[0m Entering load game phase.
+[2m[36m(pid=6282)[0m Launching next game.
+[2m[36m(pid=6282)[0m Next launch phase started: 2
+[2m[36m(pid=6282)[0m Next launch phase started: 3
+[2m[36m(pid=6282)[0m Next launch phase started: 4
+[2m[36m(pid=6282)[0m Next launch phase started: 5
+[2m[36m(pid=6282)[0m Next launch phase started: 6
+[2m[36m(pid=6282)[0m Next launch phase started: 7
+[2m[36m(pid=6282)[0m Next launch phase started: 8
+[2m[36m(pid=6291)[0m Requesting to join a single player game
+[2m[36m(pid=6291)[0m Configuring interface options
+[2m[36m(pid=6291)[0m Configure: raw interface enabled
+[2m[36m(pid=6291)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6291)[0m Configure: score interface disabled
+[2m[36m(pid=6291)[0m Configure: render interface disabled
+[2m[36m(pid=6291)[0m Entering load game phase.
+[2m[36m(pid=6291)[0m Launching next game.
+[2m[36m(pid=6291)[0m Next launch phase started: 2
+[2m[36m(pid=6291)[0m Next launch phase started: 3
+[2m[36m(pid=6291)[0m Next launch phase started: 4
+[2m[36m(pid=6291)[0m Next launch phase started: 5
+[2m[36m(pid=6291)[0m Next launch phase started: 6
+[2m[36m(pid=6291)[0m Next launch phase started: 7
+[2m[36m(pid=6291)[0m Next launch phase started: 8
+[2m[36m(pid=6290)[0m Requesting to join a single player game
+[2m[36m(pid=6290)[0m Configuring interface options
+[2m[36m(pid=6290)[0m Configure: raw interface enabled
+[2m[36m(pid=6290)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6290)[0m Configure: score interface disabled
+[2m[36m(pid=6290)[0m Configure: render interface disabled
+[2m[36m(pid=6290)[0m Entering load game phase.
+[2m[36m(pid=6290)[0m Launching next game.
+[2m[36m(pid=6290)[0m Next launch phase started: 2
+[2m[36m(pid=6290)[0m Next launch phase started: 3
+[2m[36m(pid=6290)[0m Next launch phase started: 4
+[2m[36m(pid=6290)[0m Next launch phase started: 5
+[2m[36m(pid=6290)[0m Next launch phase started: 6
+[2m[36m(pid=6290)[0m Next launch phase started: 7
+[2m[36m(pid=6290)[0m Next launch phase started: 8
+[2m[36m(pid=6289)[0m Requesting to join a single player game
+[2m[36m(pid=6289)[0m Configuring interface options
+[2m[36m(pid=6289)[0m Configure: raw interface enabled
+[2m[36m(pid=6289)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6289)[0m Configure: score interface disabled
+[2m[36m(pid=6289)[0m Configure: render interface disabled
+[2m[36m(pid=6289)[0m Entering load game phase.
+[2m[36m(pid=6289)[0m Launching next game.
+[2m[36m(pid=6289)[0m Next launch phase started: 2
+[2m[36m(pid=6289)[0m Next launch phase started: 3
+[2m[36m(pid=6289)[0m Next launch phase started: 4
+[2m[36m(pid=6289)[0m Next launch phase started: 5
+[2m[36m(pid=6289)[0m Next launch phase started: 6
+[2m[36m(pid=6289)[0m Next launch phase started: 7
+[2m[36m(pid=6289)[0m Next launch phase started: 8
+[2m[36m(pid=6281)[0m Requesting to join a single player game
+[2m[36m(pid=6281)[0m Configuring interface options
+[2m[36m(pid=6281)[0m Configure: raw interface enabled
+[2m[36m(pid=6281)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6281)[0m Configure: score interface disabled
+[2m[36m(pid=6281)[0m Configure: render interface disabled
+[2m[36m(pid=6281)[0m Entering load game phase.
+[2m[36m(pid=6281)[0m Launching next game.
+[2m[36m(pid=6281)[0m Next launch phase started: 2
+[2m[36m(pid=6281)[0m Next launch phase started: 3
+[2m[36m(pid=6281)[0m Next launch phase started: 4
+[2m[36m(pid=6281)[0m Next launch phase started: 5
+[2m[36m(pid=6281)[0m Next launch phase started: 6
+[2m[36m(pid=6281)[0m Next launch phase started: 7
+[2m[36m(pid=6281)[0m Next launch phase started: 8
+[2m[36m(pid=6288)[0m Requesting to join a single player game
+[2m[36m(pid=6288)[0m Configuring interface options
+[2m[36m(pid=6288)[0m Configure: raw interface enabled
+[2m[36m(pid=6288)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6288)[0m Configure: score interface disabled
+[2m[36m(pid=6288)[0m Configure: render interface disabled
+[2m[36m(pid=6288)[0m Entering load game phase.
+[2m[36m(pid=6288)[0m Launching next game.
+[2m[36m(pid=6288)[0m Next launch phase started: 2
+[2m[36m(pid=6288)[0m Next launch phase started: 3
+[2m[36m(pid=6288)[0m Next launch phase started: 4
+[2m[36m(pid=6288)[0m Next launch phase started: 5
+[2m[36m(pid=6288)[0m Next launch phase started: 6
+[2m[36m(pid=6288)[0m Next launch phase started: 7
+[2m[36m(pid=6288)[0m Next launch phase started: 8
+[2m[36m(pid=6283)[0m Requesting to join a single player game
+[2m[36m(pid=6283)[0m Configuring interface options
+[2m[36m(pid=6283)[0m Configure: raw interface enabled
+[2m[36m(pid=6283)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6283)[0m Configure: score interface disabled
+[2m[36m(pid=6283)[0m Configure: render interface disabled
+[2m[36m(pid=6283)[0m Entering load game phase.
+[2m[36m(pid=6283)[0m Launching next game.
+[2m[36m(pid=6283)[0m Next launch phase started: 2
+[2m[36m(pid=6283)[0m Next launch phase started: 3
+[2m[36m(pid=6283)[0m Next launch phase started: 4
+[2m[36m(pid=6283)[0m Next launch phase started: 5
+[2m[36m(pid=6283)[0m Next launch phase started: 6
+[2m[36m(pid=6283)[0m Next launch phase started: 7
+[2m[36m(pid=6283)[0m Next launch phase started: 8
+[2m[36m(pid=6292)[0m Requesting to join a single player game
+[2m[36m(pid=6292)[0m Configuring interface options
+[2m[36m(pid=6292)[0m Configure: raw interface enabled
+[2m[36m(pid=6292)[0m Configure: feature layer interface disabled
+[2m[36m(pid=6292)[0m Configure: score interface disabled
+[2m[36m(pid=6292)[0m Configure: render interface disabled
+[2m[36m(pid=6292)[0m Entering load game phase.
+[2m[36m(pid=6292)[0m Launching next game.
+[2m[36m(pid=6292)[0m Next launch phase started: 2
+[2m[36m(pid=6292)[0m Next launch phase started: 3
+[2m[36m(pid=6292)[0m Next launch phase started: 4
+[2m[36m(pid=6292)[0m Next launch phase started: 5
+[2m[36m(pid=6292)[0m Next launch phase started: 6
+[2m[36m(pid=6292)[0m Next launch phase started: 7
+[2m[36m(pid=6292)[0m Next launch phase started: 8
