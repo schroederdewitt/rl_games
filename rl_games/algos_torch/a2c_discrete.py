@@ -11,8 +11,8 @@ from torch import nn
 import numpy as np
 
 class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
-    def __init__(self, base_name, config):
-        a2c_common.DiscreteA2CBase.__init__(self, base_name, config)
+    def __init__(self, base_name, config, logger):
+        a2c_common.DiscreteA2CBase.__init__(self, base_name, config, logger)
         obs_shape = torch_ext.shape_whc_to_cwh(self.obs_shape) 
 
         config = {
@@ -29,6 +29,8 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
         self.optimizer = optim.Adam(self.model.parameters(), float(self.last_lr), eps=1e-07, weight_decay=self.weight_decay)
         #self.optimizer = torch_ext.RangerQH(self.model.parameters(), float(self.last_lr))
 
+        self.logger = logger
+
         if self.normalize_input:
             self.running_mean_std = RunningMeanStd(obs_shape).to(self.config["cuda_device"])
 
@@ -40,7 +42,7 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
             self.rnd_curiosity = rnd_curiosity.RNDCuriosityTrain(torch_ext.shape_whc_to_cwh(self.obs_shape), self.curiosity_config['network'], 
                                     self.curiosity_config, self.writer, lambda obs: self._preproc_obs(obs))
 
-    
+
 
     def set_eval(self):
         self.model.eval()

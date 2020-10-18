@@ -122,7 +122,7 @@ class Runner:
         else:
             self.reset()
             self.load_config(self.default_config)
-            agent = self.algo_factory.create(self.algo_name, base_name='run', config=self.config)  
+            agent = self.algo_factory.create(self.algo_name, base_name='run', config=self.config, logger=self.logger)
             if self.load_check_point and (self.load_path is not None):
                 agent.restore(self.load_path)
             agent.train()

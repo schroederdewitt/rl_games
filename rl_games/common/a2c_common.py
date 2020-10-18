@@ -33,13 +33,14 @@ def rescale_actions(low, high, action):
 
 
 class A2CBase:
-    def __init__(self, base_name, config):
+    def __init__(self, base_name, config, logger):
         self.config = config
         self.env_config = config.get('env_config', {})
         self.num_actors = config['num_actors']
         self.env_name = config['env_name']
         self.vec_env = vecenv.create_vec_env(self.env_name, self.num_actors, **self.env_config)
         self.env_info = self.vec_env.get_env_info()
+        self.logger = logger
 
         print('Env info:')
         print(self.env_info)
@@ -137,6 +138,8 @@ class A2CBase:
         #self_play
         if self.has_self_play_config:
             self.self_play_manager = SelfPlayManager(self.self_play_config, self.writer)
+
+        self.num_env_steps_train = 0
 
     def init_tensors(self):
         if self.observation_space.dtype == np.uint8:
@@ -375,8 +378,8 @@ class A2CBase:
         return obs_batch
 
 class DiscreteA2CBase(A2CBase):
-    def __init__(self, base_name, config):
-        A2CBase.__init__(self, base_name, config)
+    def __init__(self, base_name, config, logger):
+        A2CBase.__init__(self, base_name, config, logger)
         self.actions_num = self.env_info['action_space'].n
         self.init_tensors()
 
@@ -455,7 +458,10 @@ class DiscreteA2CBase(A2CBase):
                 mb_neglogpacs[n,:] = neglogpacs
                 mb_values[n,:] = values
                 mb_rewards[n,:] = shaped_rewards
-                
+
+            # Increase step count by self.num_actors (WHIRL)
+            self.num_env_steps_train += self.num_actors
+
             self.current_rewards += rewards
             self.current_lengths += 1
             all_done_indices = self.dones.nonzero(as_tuple=False)
@@ -672,6 +678,18 @@ class DiscreteA2CBase(A2CBase):
                 self.writer.add_scalar('info/e_clip', self.e_clip * lr_mul, frame)
                 self.writer.add_scalar('info/kl', np.mean(kls), frame)
                 self.writer.add_scalar('epochs', epoch_num, frame)
+
+                self.logger.log_stat("whirl/performance/fps", self.batch_size / scaled_time, self.num_env_steps_train)
+                self.logger.log_stat("whirl/performance/upd_time", update_time, self.num_env_steps_train)
+                self.logger.log_stat("whirl/performance/play_time", play_time, self.num_env_steps_train)
+                self.logger.log_stat("whirl/losses/a_loss", np.asscalar(np.mean(a_losses)), self.num_env_steps_train)
+                self.logger.log_stat("whirl/losses/c_loss", np.asscalar(np.mean(c_losses)), self.num_env_steps_train)
+                self.logger.log_stat("whirl/losses/entropy", np.asscalar(np.mean(entropies)), self.num_env_steps_train)
+                self.logger.log_stat("whirl/info/last_lr", last_lr * lr_mul, self.num_env_steps_train)
+                self.logger.log_stat("whirl/info/lr_mul", lr_mul, self.num_env_steps_train)
+                self.logger.log_stat("whirl/info/e_clip", self.e_clip * lr_mul, self.num_env_steps_train)
+                self.logger.log_stat("whirl/info/kl", np.asscalar(np.mean(kls)), self.num_env_steps_train)
+                self.logger.log_stat("whirl/epochs", epoch_num, self.num_env_steps_train)
                 
                 if len(self.game_rewards) > 0:
                     mean_rewards = np.mean(self.game_rewards)
@@ -686,6 +704,14 @@ class DiscreteA2CBase(A2CBase):
                     self.writer.add_scalar('episode_lengths/time', mean_lengths, total_time)
                     self.writer.add_scalar('win_rate/mean', mean_scores, frame)
                     self.writer.add_scalar('win_rate/time', mean_scores, total_time)
+
+                    self.logger.log_stat("whirl/rewards/mean", np.asscalar(mean_rewards), self.num_env_steps_train)
+                    self.logger.log_stat("whirl/rewards/time", mean_rewards, total_time)
+                    self.logger.log_stat("whirl/episode_lengths/mean", np.asscalar(mean_lengths),
+                                         self.num_env_steps_train)
+                    self.logger.log_stat("whirl/episode_lengths/time", mean_lengths, total_time)
+                    self.logger.log_stat("whirl/win_rate/mean", np.asscalar(mean_scores), self.num_env_steps_train)
+                    self.logger.log_stat("whirl/win_rate/time", mean_scores, total_time)
 
                     if self.has_curiosity:
                         if len(self.curiosity_rewards) > 0:
