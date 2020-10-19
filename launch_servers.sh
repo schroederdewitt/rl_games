@@ -4,7 +4,7 @@
 #      ./run_servers.sh 3 python3 torch_runner.py --file=whirl_baselines/3m_torch with name=test3_3m_torch label=test3_3m_torch &
 #done
 
-for i in {1..2}; do 
+for i in {1..5}; do 
       #./run_servers.sh ${i} python3 torch_runner.py --file=whirl_baselines/3m_torch_cnn with name=test3_3m_torch_cnn label=test3_3m_torch_cnn &
       #./run_servers.sh ${i} python3 torch_runner.py --file=whirl_baselines/2s3z_torch_cnn with name=test3_2s3z_torch_cnn label=test3_2s3z_torch_cnn &
       #./run_servers.sh ${i} python3 torch_runner.py --file=whirl_baselines/2s3z_torch with name=test3_2s3z_torch label=test3_2s3z_torch &
@@ -24,6 +24,6 @@ for i in {1..2}; do
       #./run_servers.sh ${i} python3 tf14_runner.py --file=whirl_baselines/vdn_MMM2 with name=vdn_tf_MMM2_a label=vdn_rf_MMM2_a
       #./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/2s3z with name=2s3z_tf_dash label=2s3z_tf_dash &
       # ./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/bane_vs_bane with name=bane_tf_dash label=bane_tf_dash  &
-      ./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/10m_vs_11m with name=10m11m_tf_dash label=10m11m_tf_dash  &
-      ./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/1c3s5z with name=1c3s5z_tf_dash label=1c3s5z_tf_dash  &
+      ./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/corridor with name=corridor_tf_dash label=corridor_tf_dash  &
+      #./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/1c3s5z with name=1c3s5z_tf_dash label=1c3s5z_tf_dash  &
 done

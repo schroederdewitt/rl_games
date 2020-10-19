@@ -7,6 +7,7 @@ echo "Launching container named '${name}'"
 # Launches a docker container using our image, and runs the provided command
 
 docker run \
+    --cpus 11.0 \
     --name $name \
     --user $(id -u) \
     -v `pwd`:/pymarl \

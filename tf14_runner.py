@@ -331,7 +331,7 @@ if __name__ == '__main__':
                 break
 
     config_dict = {"train": True}
-    db_config_path = "../db_config.private.yaml"
+    db_config_path = "./db_config.private.yaml"
     with open(db_config_path, 'r') as stream:
         config_dict = yaml.safe_load(stream)
 
