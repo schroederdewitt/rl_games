@@ -42,8 +42,6 @@ class DiscreteA2CAgent(a2c_common.DiscreteA2CBase):
             self.rnd_curiosity = rnd_curiosity.RNDCuriosityTrain(torch_ext.shape_whc_to_cwh(self.obs_shape), self.curiosity_config['network'], 
                                     self.curiosity_config, self.writer, lambda obs: self._preproc_obs(obs))
 
-
-
     def set_eval(self):
         self.model.eval()
         if self.normalize_input:

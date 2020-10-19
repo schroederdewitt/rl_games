@@ -7,13 +7,26 @@ class SelfPlayManager:
         self.writter = writter
         self.update_score = self.config['update_score']
         self.games_to_check = self.config['games_to_check']
+<<<<<<< HEAD
+=======
+        self.check_scores = self.config.get('check_scores',False)
+>>>>>>> upstream/master
         self.env_update_num = self.config.get('env_update_num',1)
         self.env_indexes = np.arange(start=0, stop=self.env_update_num)
         self.updates_num = 0
     def update(self, algo):
         self.updates_num += 1
+<<<<<<< HEAD
         if len(algo.game_rewards) >= self.games_to_check:
             mean_rewards = np.mean(algo.game_rewards)
+=======
+        if self.check_scores:
+            data = algo.game_scores
+        else:
+            data = algo.game_rewards
+        if len(data) >= self.games_to_check:
+            mean_rewards = np.mean(data)
+>>>>>>> upstream/master
             if mean_rewards > self.update_score:
                 print('Mean rewards: ', mean_rewards,' updating weights')
                 algo.clear_stats()
