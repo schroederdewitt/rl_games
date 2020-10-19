@@ -17,7 +17,9 @@ from rl_games.algos_torch import players
 
 
 class Runner:
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
+
         self.algo_factory = object_factory.ObjectFactory()
         self.algo_factory.register_builder('a2c_continuous', lambda **kwargs : a2c_continuous.A2CAgent(**kwargs))
         self.algo_factory.register_builder('a2c_discrete', lambda **kwargs : a2c_discrete.DiscreteA2CAgent(**kwargs)) 
@@ -92,13 +94,13 @@ class Runner:
                 print('Starting experiment number: ' + str(exp_num))
                 self.reset()
                 self.load_config(exp)
-                agent = self.algo_factory.create(self.algo_name, base_name='run', config=self.config)  
+                agent = self.algo_factory.create(self.algo_name, base_name='run', config=self.config, logger=self.logger)
                 self.experiment.set_results(*agent.train())
                 exp = self.experiment.get_next_config()
         else:
             self.reset()
             self.load_config(self.default_config)
-            agent = self.algo_factory.create(self.algo_name, base_name='run', config=self.config)  
+            agent = self.algo_factory.create(self.algo_name, base_name='run', config=self.config, logger=self.logger)
             if self.load_check_point and (self.load_path is not None):
                 agent.restore(self.load_path)
             agent.train()
@@ -107,7 +109,7 @@ class Runner:
         return self.player_factory.create(self.algo_name, config=self.config)
 
     def create_agent(self, obs_space, action_space):
-        return self.algo_factory.create(self.algo_name, base_name='run', observation_space=obs_space, action_space=action_space, config=self.config)
+        return self.algo_factory.create(self.algo_name, base_name='run', observation_space=obs_space, action_space=action_space, config=self.config, logger=self.logger)
 
     def run(self, args):
         if 'checkpoint' in args:

@@ -33,21 +33,14 @@ def rescale_actions(low, high, action):
 
 
 class A2CBase:
-<<<<<<< HEAD
     def __init__(self, base_name, config, logger):
-=======
-    def __init__(self, base_name, config):
->>>>>>> upstream/master
         self.config = config
         self.env_config = config.get('env_config', {})
         self.num_actors = config['num_actors']
         self.env_name = config['env_name']
         self.vec_env = vecenv.create_vec_env(self.env_name, self.num_actors, **self.env_config)
         self.env_info = self.vec_env.get_env_info()
-<<<<<<< HEAD
         self.logger = logger
-=======
->>>>>>> upstream/master
 
         print('Env info:')
         print(self.env_info)
@@ -144,16 +137,11 @@ class A2CBase:
 
         #self_play
         if self.has_self_play_config:
-<<<<<<< HEAD
+            print('Initializing SelfPlay Manager')
             self.self_play_manager = SelfPlayManager(self.self_play_config, self.writer)
 
         self.num_env_steps_train = 0
 
-=======
-            print('Initializing SelfPlay Manager')
-            self.self_play_manager = SelfPlayManager(self.self_play_config, self.writer)
-
->>>>>>> upstream/master
     def init_tensors(self):
         if self.observation_space.dtype == np.uint8:
             torch_dtype = torch.uint8
@@ -164,29 +152,19 @@ class A2CBase:
         self.current_rewards = torch.zeros(batch_size, dtype=torch.float32)
         self.current_lengths = torch.zeros(batch_size, dtype=torch.float32)
         self.dones = torch.zeros((batch_size,), dtype=torch.uint8)
-<<<<<<< HEAD
         self.mb_obs = torch.zeros((self.steps_num, batch_size) + self.obs_shape, dtype=torch_dtype)
         self.mb_obs = self.mb_obs.to(self.config["cuda_device"])
 
         if self.has_central_value:
             self.mb_vobs = torch.zeros((self.steps_num, self.num_actors) + self.state_shape, dtype=torch_dtype)
             self.mb_vobs = self.mb_vobs.to(self.config["cuda_device"])
-=======
-        self.mb_obs = torch.zeros((self.steps_num, batch_size) + self.obs_shape, dtype=torch_dtype).cuda()
-
-        if self.has_central_value:
-            self.mb_vobs = torch.zeros((self.steps_num, self.num_actors) + self.state_shape, dtype=torch_dtype).cuda()
->>>>>>> upstream/master
         
         self.mb_rewards = torch.zeros((self.steps_num, batch_size), dtype = torch.float32)
         self.mb_values = torch.zeros((self.steps_num, batch_size), dtype = torch.float32)
         self.mb_dones = torch.zeros((self.steps_num, batch_size), dtype = torch.uint8)
-<<<<<<< HEAD
         self.mb_neglogpacs = torch.zeros((self.steps_num, batch_size), dtype = torch.float32)
         self.mb_neglogpacs = self.mb_neglogpacs.to(self.config["cuda_device"])
-=======
-        self.mb_neglogpacs = torch.zeros((self.steps_num, batch_size), dtype = torch.float32).cuda()
->>>>>>> upstream/master
+
 
     def init_rnn_from_model(self, model):
         self.is_rnn = self.model.is_rnn()
@@ -195,7 +173,6 @@ class A2CBase:
             batch_size = self.num_agents * self.num_actors
             num_seqs = self.steps_num * batch_size // self.seq_len
             assert((self.steps_num * batch_size // self.num_minibatches) % self.seq_len == 0)
-<<<<<<< HEAD
             self.mb_rnn_states = [torch.zeros((s.size()[0], num_seqs, s.size()[2]), dtype = torch.float32).to(self.config["cuda_device"]) for s in self.rnn_states]
 
     def init_rnn_step(self, batch_size, mb_rnn_states):
@@ -205,17 +182,6 @@ class A2CBase:
         play_mask = torch.arange(0, batch_size, 1, dtype=torch.long, device=self.config["cuda_device"])
         steps_state = torch.arange(0, batch_size * self.steps_num//self.seq_len, self.steps_num//self.seq_len, dtype=torch.long, device=self.config["cuda_device"])
         indices = torch.zeros((batch_size), dtype = torch.long).to(self.config["cuda_device"])
-=======
-            self.mb_rnn_states = [torch.zeros((s.size()[0], num_seqs, s.size()[2]), dtype = torch.float32).cuda() for s in self.rnn_states]
-
-    def init_rnn_step(self, batch_size, mb_rnn_states):
-        mb_rnn_states = self.mb_rnn_states
-        mb_rnn_masks = torch.zeros(self.steps_num*batch_size, dtype = torch.float32).cuda()
-        steps_mask = torch.arange(0, batch_size * self.steps_num, self.steps_num, dtype=torch.long, device='cuda:0')
-        play_mask = torch.arange(0, batch_size, 1, dtype=torch.long, device='cuda:0')
-        steps_state = torch.arange(0, batch_size * self.steps_num//self.seq_len, self.steps_num//self.seq_len, dtype=torch.long, device='cuda:0')
-        indices = torch.zeros((batch_size), dtype = torch.long).cuda()
->>>>>>> upstream/master
         return mb_rnn_masks, indices, steps_mask, steps_state, play_mask, mb_rnn_states
 
     def process_rnn_indices(self, mb_rnn_masks, indices, steps_mask, steps_state, mb_rnn_states):
@@ -269,15 +235,9 @@ class A2CBase:
         elif isinstance(obs, np.ndarray):
             assert(self.observation_space.dtype != np.int8)
             if self.observation_space.dtype == np.uint8:
-<<<<<<< HEAD
                 obs = torch.ByteTensor(obs).to(self.config["cuda_device"])
             else:
                 obs = torch.FloatTensor(obs).to(self.config["cuda_device"])
-=======
-                obs = torch.ByteTensor(obs).cuda()
-            else:
-                obs = torch.FloatTensor(obs).cuda()
->>>>>>> upstream/master
         return obs
         
     def obs_to_tensors(self, obs):
@@ -325,10 +285,8 @@ class A2CBase:
         batch_size = self.num_agents * self.num_actors
         self.game_rewards.clear()
         self.game_lengths.clear()
-<<<<<<< HEAD
-=======
         self.game_scores.clear()
->>>>>>> upstream/master
+
         self.current_rewards = torch.zeros(batch_size, dtype=torch.float32)
         self.current_lengths = torch.zeros(batch_size, dtype=torch.float32)
         self.last_mean_rewards = -100500
@@ -424,24 +382,18 @@ class A2CBase:
         return obs_batch
 
 class DiscreteA2CBase(A2CBase):
-<<<<<<< HEAD
+
     def __init__(self, base_name, config, logger):
         A2CBase.__init__(self, base_name, config, logger)
-=======
-    def __init__(self, base_name, config):
-        A2CBase.__init__(self, base_name, config)
->>>>>>> upstream/master
+
         self.actions_num = self.env_info['action_space'].n
         self.init_tensors()
 
     def init_tensors(self):
         A2CBase.init_tensors(self)
         batch_size = self.num_agents * self.num_actors
-<<<<<<< HEAD
         self.mb_actions = torch.zeros((self.steps_num, batch_size), dtype = torch.long).to(self.config["cuda_device"])
-=======
-        self.mb_actions = torch.zeros((self.steps_num, batch_size), dtype = torch.long).cuda()
->>>>>>> upstream/master
+
         if self.has_curiosity:
             self.mb_values = torch.zeros((self.steps_num, batch_size, 2), dtype = torch.float32)
             self.mb_intrinsic_rewards = torch.zeros((self.steps_num, batch_size), dtype = torch.float32)
@@ -513,14 +465,10 @@ class DiscreteA2CBase(A2CBase):
                 mb_neglogpacs[n,:] = neglogpacs
                 mb_values[n,:] = values
                 mb_rewards[n,:] = shaped_rewards
-<<<<<<< HEAD
 
             # Increase step count by self.num_actors (WHIRL)
             self.num_env_steps_train += self.num_actors
 
-=======
-                
->>>>>>> upstream/master
             self.current_rewards += rewards
             self.current_lengths += 1
             all_done_indices = self.dones.nonzero(as_tuple=False)
@@ -601,15 +549,10 @@ class DiscreteA2CBase(A2CBase):
         play_time_start = time.time()
         batch_dict = self.play_steps() 
         obses = batch_dict['obs']
-<<<<<<< HEAD
         returns = batch_dict['returns'].to(self.config["cuda_device"])
         dones = batch_dict['dones'].to(self.config["cuda_device"])
         values = batch_dict['values'].to(self.config["cuda_device"])
-=======
-        returns = batch_dict['returns'].cuda()
-        dones = batch_dict['dones'].cuda()
-        values = batch_dict['values'].cuda()
->>>>>>> upstream/master
+
         actions = batch_dict['actions']
         neglogpacs = batch_dict['neglogpacs']
         rnn_states = batch_dict.get('rnn_states', None)
@@ -646,7 +589,7 @@ class DiscreteA2CBase(A2CBase):
             print(rnn_masks.sum().item() / (rnn_masks.nelement()))
             total_games = self.batch_size // self.seq_len
             num_games_batch = self.minibatch_size // self.seq_len
-<<<<<<< HEAD
+
             game_indexes = torch.arange(total_games, dtype=torch.long, device=self.config["cuda_device"])
             flat_indexes = torch.arange(total_games * self.seq_len, dtype=torch.long, device=self.config["cuda_device"]).reshape(total_games, self.seq_len)
             for _ in range(0, self.mini_epochs_num):
@@ -654,15 +597,7 @@ class DiscreteA2CBase(A2CBase):
                 #game_indexes = game_indexes[permutation]
                 for i in range(0, self.num_minibatches):
                     batch = torch.range(i * num_games_batch, (i + 1) * num_games_batch - 1, dtype=torch.long, device=self.config["cuda_device"])
-=======
-            game_indexes = torch.arange(total_games, dtype=torch.long, device='cuda:0')
-            flat_indexes = torch.arange(total_games * self.seq_len, dtype=torch.long, device='cuda:0').reshape(total_games, self.seq_len)
-            for _ in range(0, self.mini_epochs_num):
-                #permutation = torch.randperm(total_games, dtype=torch.long, device='cuda:0')
-                #game_indexes = game_indexes[permutation]
-                for i in range(0, self.num_minibatches):
-                    batch = torch.range(i * num_games_batch, (i + 1) * num_games_batch - 1, dtype=torch.long, device='cuda:0')
->>>>>>> upstream/master
+
                     mb_indexes = game_indexes[batch]
  
                     mbatch = flat_indexes[mb_indexes].flatten()           
@@ -684,11 +619,9 @@ class DiscreteA2CBase(A2CBase):
                     entropies.append(entropy)    
         else:
             for _ in range(0, self.mini_epochs_num):
-<<<<<<< HEAD
+
                 permutation = torch.randperm(self.batch_size, dtype=torch.long, device=self.config["cuda_device"])
-=======
-                permutation = torch.randperm(self.batch_size, dtype=torch.long, device='cuda:0')
->>>>>>> upstream/master
+
                 obses = obses[permutation]
                 returns = returns[permutation]
                 
@@ -698,11 +631,9 @@ class DiscreteA2CBase(A2CBase):
                 advantages = advantages[permutation]
 
                 for i in range(0, self.num_minibatches):
-<<<<<<< HEAD
+
                     batch = torch.range(i * self.minibatch_size, (i + 1) * self.minibatch_size - 1, dtype=torch.long, device=self.config["cuda_device"])
-=======
-                    batch = torch.range(i * self.minibatch_size, (i + 1) * self.minibatch_size - 1, dtype=torch.long, device='cuda:0')
->>>>>>> upstream/master
+
                     input_dict = {}
                     input_dict['old_values'] = values[batch]
                     input_dict['old_logp_actions'] = neglogpacs[batch]
@@ -761,7 +692,6 @@ class DiscreteA2CBase(A2CBase):
                 self.writer.add_scalar('info/e_clip', self.e_clip * lr_mul, frame)
                 self.writer.add_scalar('info/kl', np.mean(kls), frame)
                 self.writer.add_scalar('epochs', epoch_num, frame)
-<<<<<<< HEAD
 
                 self.logger.log_stat("whirl/performance/fps", self.batch_size / scaled_time, self.num_env_steps_train)
                 self.logger.log_stat("whirl/performance/upd_time", update_time, self.num_env_steps_train)
@@ -774,8 +704,7 @@ class DiscreteA2CBase(A2CBase):
                 self.logger.log_stat("whirl/info/e_clip", self.e_clip * lr_mul, self.num_env_steps_train)
                 self.logger.log_stat("whirl/info/kl", np.asscalar(np.mean(kls)), self.num_env_steps_train)
                 self.logger.log_stat("whirl/epochs", epoch_num, self.num_env_steps_train)
-=======
->>>>>>> upstream/master
+
                 
                 if len(self.game_rewards) > 0:
                     mean_rewards = np.mean(self.game_rewards)
@@ -791,7 +720,7 @@ class DiscreteA2CBase(A2CBase):
                     self.writer.add_scalar('win_rate/mean', mean_scores, frame)
                     self.writer.add_scalar('win_rate/time', mean_scores, total_time)
 
-<<<<<<< HEAD
+
                     self.logger.log_stat("whirl/rewards/mean", np.asscalar(mean_rewards), self.num_env_steps_train)
                     self.logger.log_stat("whirl/rewards/time", mean_rewards, total_time)
                     self.logger.log_stat("whirl/episode_lengths/mean", np.asscalar(mean_lengths),
@@ -800,8 +729,7 @@ class DiscreteA2CBase(A2CBase):
                     self.logger.log_stat("whirl/win_rate/mean", np.asscalar(mean_scores), self.num_env_steps_train)
                     self.logger.log_stat("whirl/win_rate/time", mean_scores, total_time)
 
-=======
->>>>>>> upstream/master
+
                     if self.has_curiosity:
                         if len(self.curiosity_rewards) > 0:
                             mean_cur_rewards = np.mean(self.curiosity_rewards)
@@ -843,29 +771,19 @@ class ContinuousA2CBase(A2CBase):
 
         self.bounds_loss_coef = config.get('bounds_loss_coef', None)
 
-<<<<<<< HEAD
         # todo introduce device instead of.to(self.config["cuda_device"])()
         self.actions_low = torch.from_numpy(action_space.low).float().to(self.config["cuda_device"])()
         self.actions_high = torch.from_numpy(action_space.high).float().to(self.config["cuda_device"])()
-=======
-        # todo introduce device instead of cuda()
-        self.actions_low = torch.from_numpy(action_space.low).float().cuda()
-        self.actions_high = torch.from_numpy(action_space.high).float().cuda()
->>>>>>> upstream/master
+
         self.init_tensors()
 
     def init_tensors(self):
         A2CBase.init_tensors(self)
         batch_size = self.num_agents * self.num_actors
-<<<<<<< HEAD
         self.mb_actions = torch.zeros((self.steps_num, batch_size, self.actions_num), dtype = torch.float32).to(self.config["cuda_device"])()
         self.mb_mus = torch.zeros((self.steps_num, batch_size, self.actions_num), dtype = torch.float32).to(self.config["cuda_device"])()
         self.mb_sigmas = torch.zeros((self.steps_num, batch_size, self.actions_num), dtype = torch.float32).to(self.config["cuda_device"])()
-=======
-        self.mb_actions = torch.zeros((self.steps_num, batch_size, self.actions_num), dtype = torch.float32).cuda()
-        self.mb_mus = torch.zeros((self.steps_num, batch_size, self.actions_num), dtype = torch.float32).cuda()
-        self.mb_sigmas = torch.zeros((self.steps_num, batch_size, self.actions_num), dtype = torch.float32).cuda()
->>>>>>> upstream/master
+
         if self.has_curiosity:
             self.mb_values = torch.zeros((self.steps_num, batch_size, 2), dtype = torch.float32)
             self.mb_intrinsic_rewards = torch.zeros((self.steps_num, batch_size), dtype = torch.float32)
@@ -1026,15 +944,10 @@ class ContinuousA2CBase(A2CBase):
             batch_dict = self.play_steps()
             
         obses = batch_dict['obs']
-<<<<<<< HEAD
-        returns = batch_dict['returns'].to(self.config["cuda_device"])()
-        dones = batch_dict['dones'].to(self.config["cuda_device"])()
-        values = batch_dict['values'].to(self.config["cuda_device"])()
-=======
-        returns = batch_dict['returns'].cuda()
-        dones = batch_dict['dones'].cuda()
-        values = batch_dict['values'].cuda()
->>>>>>> upstream/master
+        returns = batch_dict['returns'].to(self.config["cuda_device"])
+        dones = batch_dict['dones'].to(self.config["cuda_device"])
+        values = batch_dict['values'].to(self.config["cuda_device"])
+
         actions = batch_dict['actions']
         neglogpacs = batch_dict['neglogpacs']
         mus = batch_dict['mus']
@@ -1076,7 +989,6 @@ class ContinuousA2CBase(A2CBase):
             self.curr_frames = int(self.batch_size_envs * frames_mask_ratio)
             total_games = self.batch_size // self.seq_len
             num_games_batch = self.minibatch_size // self.seq_len
-<<<<<<< HEAD
             game_indexes = torch.arange(total_games, dtype=torch.long, device=self.config["cuda_device"])
             flat_indexes = torch.arange(total_games * self.seq_len, dtype=torch.long, device=self.config["cuda_device"]).reshape(total_games, self.seq_len)
             for _ in range(0, self.mini_epochs_num):
@@ -1084,15 +996,7 @@ class ContinuousA2CBase(A2CBase):
                 game_indexes = game_indexes[permutation]
                 for i in range(0, self.num_minibatches):
                     batch = torch.range(i * num_games_batch, (i + 1) * num_games_batch - 1, dtype=torch.long, device=self.config["cuda_device"])
-=======
-            game_indexes = torch.arange(total_games, dtype=torch.long, device='cuda:0')
-            flat_indexes = torch.arange(total_games * self.seq_len, dtype=torch.long, device='cuda:0').reshape(total_games, self.seq_len)
-            for _ in range(0, self.mini_epochs_num):
-                permutation = torch.randperm(total_games, dtype=torch.long, device='cuda:0')
-                game_indexes = game_indexes[permutation]
-                for i in range(0, self.num_minibatches):
-                    batch = torch.range(i * num_games_batch, (i + 1) * num_games_batch - 1, dtype=torch.long, device='cuda:0')
->>>>>>> upstream/master
+
                     mb_indexes = game_indexes[batch]
                     mbatch = flat_indexes[mb_indexes].flatten()        
             
@@ -1119,11 +1023,8 @@ class ContinuousA2CBase(A2CBase):
                         b_losses.append(b_loss)                            
 
         else:
-<<<<<<< HEAD
             '''permutation = torch.randperm(self.batch_size, dtype=torch.long, device=.to(self.config["cuda_device"]):0')
-=======
-            '''permutation = torch.randperm(self.batch_size, dtype=torch.long, device='cuda:0')
->>>>>>> upstream/master
+
             obses = obses[permutation]
             returns = returns[permutation]      
             actions = actions[permutation]
@@ -1135,11 +1036,8 @@ class ContinuousA2CBase(A2CBase):
 
             for _ in range(0, self.mini_epochs_num):
                 for i in range(0, self.num_minibatches):
-<<<<<<< HEAD
                     batch = torch.range(i * self.minibatch_size, (i + 1) * self.minibatch_size - 1, dtype=torch.long, device=self.config["cuda_device"])
-=======
-                    batch = torch.range(i * self.minibatch_size, (i + 1) * self.minibatch_size - 1, dtype=torch.long, device='cuda:0')
->>>>>>> upstream/master
+
                     #batch = range(i * self.minibatch_size, (i + 1) * self.minibatch_size)
                     input_dict = {}
                     input_dict['old_values'] = values[batch]

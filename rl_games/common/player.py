@@ -100,11 +100,9 @@ class BasePlayer(object):
             rnn_states = self.model.get_default_rnn_state()
             self.states = [torch.zeros((s.size()[0], self.batch_size, s.size()[2]), dtype = torch.float32).to(self.device) for s in rnn_states]
 
-<<<<<<< HEAD
-    def run(self, n_games=1000, n_game_life = 1, render = False, is_determenistic = False):
-=======
+
     def run(self, n_games=1000, n_game_life = 1, render = True, is_determenistic = True):
->>>>>>> upstream/master
+
         sum_rewards = 0
         sum_steps = 0
         sum_game_res = 0
@@ -118,11 +116,9 @@ class BasePlayer(object):
             agent_inited = True
             print('setting agent weights for selfplay')
             self.env.create_agent(self.env.config_path)
-<<<<<<< HEAD
-            self.env.agent.set_weights(self.get_weights())
-=======
+
             #self.env.agent.set_weights(self.get_weights())
->>>>>>> upstream/master
+
 
         if has_masks_func:
             has_masks = self.env.has_action_mask()
