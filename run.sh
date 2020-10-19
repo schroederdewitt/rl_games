@@ -17,5 +17,5 @@ NV_GPU="$GPU" ${cmd} run -i \
     --name $name \
     --user $(id -u) \
     -v `pwd`:/home/minsun/pymarl \
-    -t rl_games:ppo \
+    rl_games:ppo \
     ${@:2}
