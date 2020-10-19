@@ -99,6 +99,7 @@ def my_main(_run, _config, _log):
     logger = Logger(_log)
 
     # configure tensorboard logger
+    _config["label"] = "ppo_cv"
     unique_token = "{}__{}".format(_config["label"], datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
     use_tensorboard = False
     if use_tensorboard:
