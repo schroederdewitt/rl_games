@@ -1,0 +1,10 @@
+bash run.sh 0 python3 runner.py --file=smac/27m_vs_30m_cv &
+bash run.sh 0 python3 runner.py --file=smac/3m_torch_cv &
+bash run.sh 0 python3 runner.py --file=smac/3m_torch_cv_joint &
+bash run.sh 0 python3 runner.py --file=smac/3s5z_vs_3s6z_torch_cv &
+bash run.sh 0 python3 runner.py --file=smac/3s_vs_5z_cv &
+bash run.sh 0 python3 runner.py --file=smac/3s_vs_5z_cv_joint &
+bash run.sh 0 python3 runner.py --file=smac/5m_vs_6m_cv &
+bash run.sh 0 python3 runner.py --file=smac/6h_vs_8z_torch_cv &
+bash run.sh 0 python3 runner.py --file=smac/8m_torch_cv &
+bash run.sh 0 python3 runner.py --file=smac/corridor_torch_cv &
