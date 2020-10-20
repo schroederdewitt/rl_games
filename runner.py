@@ -115,8 +115,8 @@ def my_main(_run, _config, _log):
     _log.info("\n\n" + experiment_params + "\n")
     _config["params"]["config"]["run_id"] = _run._id
 
-    args = parse_args()
-    if args['tf']:
+    #args = parse_args()
+    if _config['use_tf']:
         from rl_games.tf14_runner import Runner
     else:
         from rl_games.torch_runner import Runner
@@ -190,6 +190,7 @@ if __name__ == '__main__':
 
     config_dict["params"]["config"]["cuda_device"] = "cuda:0" if torch.cuda.is_available() else "cpu"
     config_dict["params"]["config"]["use_cuda"] = torch.cuda.is_available()
+    config_dict["use_tf"] = "--tf" in params
 
     # now add all the config to sacred
     ex.add_config(config_dict)
