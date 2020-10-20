@@ -35,8 +35,7 @@ RUN mkdir /install
 WORKDIR /install
 
 RUN pip3 install jsonpickle==0.9.6
-# install Sacred (from OxWhirl fork)
-RUN pip3 install setuptools
+# install Sacred (from OxWhirl fork)RUN pip3 install setuptools
 RUN pip3 install sacred
 
 # Install pymongo
@@ -52,6 +51,10 @@ RUN pip3 install tensorflow-probability==0.7.0
 RUN pip3 install opencv-python==4.1.0.25
 RUN pip3 install gym-super-mario-bros==7.1.6
 RUN pip3 install pybullet==2.5.0
+RUN pip3 install hashfs
+RUN pip3 install tinydb
+RUN pip3 install tinydb_serialization
+RUN pip3 install psutil
 RUN pip3 install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 
 ARG UID

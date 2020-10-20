@@ -1,5 +1,6 @@
 # 3rd
 3rdparty/
+nohup.out
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

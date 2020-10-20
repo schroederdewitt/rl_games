@@ -25,7 +25,7 @@ def swap_and_flatten01(arr):
     return arr.swapaxes(0, 1).reshape(s[0] * s[1], *s[2:])
 
 class A2CAgent:
-    def __init__(self, sess, base_name, observation_space, action_space, config):
+    def __init__(self, sess, base_name, observation_space, action_space, config, logger):
         observation_shape = observation_space.shape
         self.use_action_masks = config.get('use_action_masks', False)
         self.is_train = config.get('is_train', True)
@@ -149,6 +149,9 @@ class A2CAgent:
 
         self.sess.run(tf.global_variables_initializer())
 
+        self.logger = logger
+        self.num_env_steps_train = 0
+
     def setup_losses(self):
         curr_e_clip = self.e_clip * self.lr_multiplier
         if (self.ppo):
@@ -250,6 +253,9 @@ class A2CAgent:
             mb_dones.append(self.dones.copy())
 
             self.obs[:], rewards, self.dones, infos = self.vec_env.step(actions)
+
+            self.num_env_steps_train += self.num_actors
+
             self.current_rewards += rewards
 
             self.current_lengths += 1
@@ -425,6 +431,18 @@ class A2CAgent:
                 self.writer.add_scalar('info/e_clip', self.e_clip * lr_mul, frame)
                 self.writer.add_scalar('info/kl', np.mean(kls), frame)
                 self.writer.add_scalar('epochs', epoch_num, frame)
+
+                self.logger.log_stat('performance/fps', batch_size / scaled_time, self.num_env_steps_train)
+                self.logger.log_stat('performance/upd_time', update_time, self.num_env_steps_train)
+                self.logger.log_stat('performance/play_time', play_time, self.num_env_steps_train)
+                self.logger.log_stat('losses/a_loss', np.mean(a_losses), self.num_env_steps_train)
+                self.logger.log_stat('losses/c_loss', np.mean(c_losses), self.num_env_steps_train)
+                self.logger.log_stat('losses/entropy', np.mean(entropies), self.num_env_steps_train)
+                self.logger.log_stat('info/last_lr', last_lr * lr_mul, self.num_env_steps_train)
+                self.logger.log_stat('info/lr_mul', lr_mul, self.num_env_steps_train)
+                self.logger.log_stat('info/e_clip', self.e_clip * lr_mul, self.num_env_steps_train)
+                self.logger.log_stat('info/kl', np.mean(kls), self.num_env_steps_train)
+                self.logger.log_stat('epochs', epoch_num, self.num_env_steps_train)
                 
                 if len(self.game_rewards) > 0:
                     mean_rewards = np.mean(self.game_rewards)
@@ -436,6 +454,13 @@ class A2CAgent:
                     self.writer.add_scalar('episode_lengths/time', mean_lengths, total_time)
                     self.writer.add_scalar('win_rate/mean', mean_scores, frame)
                     self.writer.add_scalar('win_rate/time', mean_scores, total_time)
+
+                    self.logger.log_stat('rewards/mean', mean_rewards, self.num_env_steps_train)
+                    self.logger.log_stat('rewards/time', mean_rewards, self.num_env_steps_train_time)
+                    self.logger.log_stat('episode_lengths/mean', mean_lengths, self.num_env_steps_train)
+                    self.logger.log_stat('episode_lengths/time', mean_lengths, self.num_env_steps_train_time)
+                    self.logger.log_stat('win_rate/mean', mean_scores, self.num_env_steps_train)
+                    self.logger.log_stat('win_rate/time', mean_scores, self.num_env_steps_train_time)
 
                     if rep_count % 10 == 0:
                         self.save("./nn/" + 'last_' + self.config['name'] + 'ep=' + str(epoch_num) + 'rew=' + str(mean_rewards))
