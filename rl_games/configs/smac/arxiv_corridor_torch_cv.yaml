@@ -5,7 +5,7 @@ params:
   model:
     name: discrete_a2c
 
-  load_checkpoint: True
+  load_checkpoint: False
   load_path: 'nn/corridor_cv.pth'
 
   network:
@@ -49,6 +49,7 @@ params:
     normalize_input: True
     use_action_masks: True
     ignore_dead_batches : False
+    central_value: True
 
     env_config:
       name: corridor
@@ -59,21 +60,3 @@ params:
       reward_negative_scale: 0.05
       #apply_agent_ids: True
       #flatten: False
-
-    central_value_config:
-      minibatch_size: 512
-      mini_epochs: 4
-      lr: 3e-4
-      clip_value: False
-      normalize_input: True
-      network:
-        name: actor_critic
-        central_value: True
-        mlp:
-          units: [512, 256, 128]
-          activation: relu
-          initializer:
-            name: variance_scaling_initializer
-            scale: 2 
-          regularizer:
-            name:  'None'

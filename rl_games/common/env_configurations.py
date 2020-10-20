@@ -429,7 +429,12 @@ def get_obs_and_action_spaces_from_config(config):
     result_shapes = {}
     env_config = config.get('env_config', {})
     env = configurations[config['env_name']]['env_creator'](**env_config)
-    result_shapes['observation_space'] = env.observation_space
+
+    if config.get('central_value_config', None):
+        result_shapes['observation_space'] = env.observation_space
+    else:
+        result_shapes['observation_space'] = env.state_space
+
     result_shapes['action_space'] = env.action_space
     env.close()
     # workaround for deepmind control

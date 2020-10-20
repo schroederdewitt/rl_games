@@ -55,6 +55,10 @@ class A2CAgent:
        
         self.state_shape = observation_shape
         self.critic_coef = config['critic_coef']
+        
+        # central value 
+        self.central_v = self.config.get('central_v', False)
+
         self.writer = SummaryWriter('runs/' + config['name'] + datetime.now().strftime("%d, %H:%M:%S"))
         self.sess = sess
         self.grad_norm = config['grad_norm']
@@ -204,7 +208,6 @@ class A2CAgent:
         else:
             return (*self.sess.run(run_ops, {self.action_mask_ph: action_masks, self.target_obs_ph : obs}), None)
 
-
     def get_values(self, obs):
         if self.network.is_rnn():
             return self.sess.run([self.target_state_values], {self.target_obs_ph : obs, self.target_states_ph : self.states, self.target_masks_ph : self.dones})
@@ -216,8 +219,6 @@ class A2CAgent:
     
     def set_weights(self, weights):
         return self.variables.set_flat(weights)
-
-
 
     def play_steps(self):
         # here, we init the lists that will contain the mb of experiences
@@ -309,7 +310,11 @@ class A2CAgent:
         self.saver.restore(self.sess, fn)
 
     def train(self):
-        self.obs = self.vec_env.reset()
+        if self.central_v:
+            res = self.vec_env.reset()
+            self.obs = res['state'] # res: {"obs": obses, "state" : states}
+        else:
+            self.obs = self.vec_env.reset()
         batch_size = self.steps_num * self.num_actors * self.num_agents
         batch_size_envs = self.steps_num * self.num_actors
         minibatch_size = self.config['minibatch_size']
