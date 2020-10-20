@@ -75,7 +75,7 @@ params:
     ignore_dead_batches : False
 
     env_config:
-      name: MMM
+      name: MMM2
       frames: 4
       transpose: True
       random_invalid_step: False
