@@ -222,7 +222,6 @@ def create_smac(name, **kwargs):
     has_cv = kwargs.get('central_value', False)
     env = SMACEnv(name, **kwargs)
     
-    
     if frames > 1:
         if has_cv:
             env = wrappers.BatchedFrameStackWithStates(env, frames, transpose=False, flatten=flatten)
@@ -233,13 +232,13 @@ def create_smac(name, **kwargs):
 def create_smac_cnn(name, **kwargs):
     from rl_games.envs.smac_env import SMACEnv
     has_cv = kwargs.get('central_value', False)
-    frames = kwargs.pop('frames', 4)
+    frames = kwargs.pop('frames', 1)
     transpose = kwargs.pop('transpose', False)
     env = SMACEnv(name, **kwargs)
     if has_cv:
-        env = wrappers.BatchedFrameStackWithStates(env, frames, transpose=False)
+        env = wrappers.BatchedFrameStackWithStates(env, frames, transpose)
     else:
-        env = wrappers.BatchedFrameStack(env, frames, transpose=False)
+        env = wrappers.BatchedFrameStack(env, frames, transpose)
         
     return env
 

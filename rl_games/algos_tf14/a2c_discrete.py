@@ -196,6 +196,8 @@ class A2CAgent:
         return self.sess.run([self.update_epoch_op])[0]
 
     def get_action_values(self, obs):
+        if isinstance(obs, dict):
+            obs = obs['states'] # central_v mode
         run_ops = [self.target_action, self.target_state_values, self.target_neglogp]
         if self.network.is_rnn():
             run_ops.append(self.target_lstm_state)
@@ -204,6 +206,8 @@ class A2CAgent:
             return (*self.sess.run(run_ops, {self.target_obs_ph : obs}), None)
 
     def get_masked_action_values(self, obs, action_masks):
+        if isinstance(obs, dict):
+            obs = obs['states'] # central_v mode
         run_ops = [self.target_action, self.target_state_values, self.target_neglogp, self.logits]
         if self.network.is_rnn():
             run_ops.append(self.target_lstm_state)
@@ -212,6 +216,8 @@ class A2CAgent:
             return (*self.sess.run(run_ops, {self.action_mask_ph: action_masks, self.target_obs_ph : obs}), None)
 
     def get_values(self, obs):
+        if isinstance(obs, dict):
+            obs = obs['states'] # central_v mode
         if self.network.is_rnn():
             return self.sess.run([self.target_state_values], {self.target_obs_ph : obs, self.target_states_ph : self.states, self.target_masks_ph : self.dones})
         else:
@@ -252,7 +258,9 @@ class A2CAgent:
             mb_neglogpacs.append(neglogpacs)
             mb_dones.append(self.dones.copy())
 
-            self.obs[:], rewards, self.dones, infos = self.vec_env.step(actions)
+            self.obs, rewards, self.dones, infos = self.vec_env.step(actions)
+            if self.central_v:
+                self.obs = self.obs['state']
 
             self.num_env_steps_train += self.num_actors
 
