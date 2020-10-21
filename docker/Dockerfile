@@ -73,3 +73,6 @@ RUN pip3 install git+https://github.com/oxwhirl/smac.git
 ENV SC2PATH /home/minsun/pymarl/3rdparty/StarCraftII
 
 WORKDIR /home/minsun/pymarl
+
+RUN echo 'set editing-mode vi' >> ~/.inputrc
+RUN echo 'set keymap vi' >> ~/.inputrc
