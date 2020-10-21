@@ -57,7 +57,7 @@ class A2CAgent:
         self.critic_coef = config['critic_coef']
         
         # central value 
-        self.central_v = self.config.get('central_v', False)
+        self.central_v = self.config.get('central_value', False)
 
         self.writer = SummaryWriter('runs/' + config['name'] + datetime.now().strftime("%d, %H:%M:%S"))
         self.sess = sess
@@ -235,6 +235,8 @@ class A2CAgent:
         
         mb_states = []
         epinfos = []
+        if isinstance(self.obs, dict):
+            self.obs = self.obs['states']
 
         # for n in range number of steps
         for _ in range(self.steps_num):
@@ -252,6 +254,8 @@ class A2CAgent:
             actions = np.squeeze(actions)
             values = np.squeeze(values)
             neglogpacs = np.squeeze(neglogpacs)
+            if isinstance(self.obs, dict):
+                self.obs = self.obs['states']
             mb_obs.append(self.obs.copy())
             mb_actions.append(actions)
             mb_values.append(values)
@@ -260,7 +264,7 @@ class A2CAgent:
 
             self.obs, rewards, self.dones, infos = self.vec_env.step(actions)
             if self.central_v:
-                self.obs = self.obs['state']
+                self.obs = self.obs['states']
 
             self.num_env_steps_train += self.num_actors
 
@@ -285,6 +289,8 @@ class A2CAgent:
             mb_rewards.append(shaped_rewards)
 
         #using openai baseline approach
+        if isinstance(self.obs, dict):
+            self.obs = self.obs['states']
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
         mb_rewards = np.asarray(mb_rewards, dtype=np.float32)
         mb_actions = np.asarray(mb_actions, dtype=np.float32)
@@ -326,7 +332,7 @@ class A2CAgent:
     def train(self):
         if self.central_v:
             res = self.vec_env.reset()
-            self.obs = res['state'] # res: {"obs": obses, "state" : states}
+            self.obs = res['states'] # res: {"obs": obses, "states" : states}
         else:
             self.obs = self.vec_env.reset()
         batch_size = self.steps_num * self.num_actors * self.num_agents
@@ -464,11 +470,11 @@ class A2CAgent:
                     self.writer.add_scalar('win_rate/time', mean_scores, total_time)
 
                     self.logger.log_stat('rewards/mean', mean_rewards, self.num_env_steps_train)
-                    self.logger.log_stat('rewards/time', mean_rewards, self.num_env_steps_train_time)
+                    self.logger.log_stat('rewards/time', mean_rewards, self.num_env_steps_train)
                     self.logger.log_stat('episode_lengths/mean', mean_lengths, self.num_env_steps_train)
-                    self.logger.log_stat('episode_lengths/time', mean_lengths, self.num_env_steps_train_time)
+                    self.logger.log_stat('episode_lengths/time', mean_lengths, self.num_env_steps_train)
                     self.logger.log_stat('win_rate/mean', mean_scores, self.num_env_steps_train)
-                    self.logger.log_stat('win_rate/time', mean_scores, self.num_env_steps_train_time)
+                    self.logger.log_stat('win_rate/time', mean_scores, self.num_env_steps_train)
 
                     if rep_count % 10 == 0:
                         self.save("./nn/" + 'last_' + self.config['name'] + 'ep=' + str(epoch_num) + 'rew=' + str(mean_rewards))

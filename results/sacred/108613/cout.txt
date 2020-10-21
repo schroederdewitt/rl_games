@@ -1,4 +1,0 @@
-[INFO 23:39:14] pymarl Running command 'my_main'
-[INFO 23:39:15] pymarl Started run with ID "108613"
-[DEBUG 23:39:15] pymarl Starting Heartbeat
-[DEBUG 23:39:15] my_main Started

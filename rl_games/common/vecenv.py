@@ -193,7 +193,7 @@ class RayVecSMACEnv(IVecEnv):
 
         if self.use_global_obs:
             newobsdict["obs"] = np.concatenate(newobs, axis=0)
-            newobsdict["states"] = np.asarray(newstates)
+            newobsdict["states"] = np.concatenate(newstates, axis=0)
             ret_obs = newobsdict
         else:
             ret_obs = np.concatenate(newobs, axis=0)
@@ -222,7 +222,7 @@ class RayVecSMACEnv(IVecEnv):
                     newobs.append(cobs)
             newobsdict = {}
             newobsdict["obs"] = np.concatenate(newobs, axis=0)
-            newobsdict["states"] = np.asarray(newstates)
+            newobsdict["states"] = np.concatenate(newstates, axis=0)
             ret_obs = newobsdict
         else:
             ret_obs = ray.get(res_obs)

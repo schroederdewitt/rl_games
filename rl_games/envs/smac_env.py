@@ -38,7 +38,7 @@ class SMACEnv(gym.Env):
             obs = np.concatenate([obs, all_ids], axis=-1)
 
         self.obs_dict["obs"] = np.array(obs)
-        self.obs_dict["state"] = np.array(state)
+        self.obs_dict["state"] = np.broadcast_to(np.array([state]), (self.n_agents, np.array(state).shape[0]) )
 
         if self.use_central_value:
             return self.obs_dict
