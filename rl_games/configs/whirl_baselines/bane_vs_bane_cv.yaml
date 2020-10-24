@@ -73,6 +73,7 @@ params:
     seq_len: 2
     use_action_masks: True
     ignore_dead_batches : False
+    central_value: True
 
     env_config:
       name: bane_vs_bane
