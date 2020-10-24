@@ -43,7 +43,7 @@ class CentralValueTrain(nn.Module):
             self.rnn_states = self.model.get_default_rnn_state()
             num_seqs = self.steps_num * self.num_actors // self.seq_len
             assert((self.steps_num * batch_size // self.num_minibatches) % self.seq_len == 0)
-            self.mb_rnn_states = [torch.zeros((s.size()[0], num_seqs, s.size()[2]), dtype = torch.float32).cuda() for s in self.rnn_states]
+            self.mb_rnn_states = [torch.zeros((s.size()[0], num_seqs, s.size()[2]), dtype = torch.float32).to("cuda:0" if torch.cuda.is_available() else "cpu") for s in self.rnn_states]
 
     def _preproc_obs(self, obs_batch):
         if obs_batch.dtype == torch.uint8:
@@ -81,8 +81,8 @@ class CentralValueTrain(nn.Module):
         self.train()
         obs = input_dict['states']
         batch_size = obs.size()[0]
-        value_preds = input_dict['values'].cuda()
-        returns = input_dict['returns'].cuda()
+        value_preds = input_dict['values'].to("cuda:0" if torch.cuda.is_available() else "cpu")
+        returns = input_dict['returns'].to("cuda:0" if torch.cuda.is_available() else "cpu")
         actions = input_dict['actions']
 
         if self.is_rnn:
@@ -111,11 +111,11 @@ class CentralValueTrain(nn.Module):
         self.frame = self.frame + 1
         if self.is_rnn:
             num_games_batch = mini_batch // self.seq_len
-            game_indexes = torch.arange(total_games, dtype=torch.long, device='cuda:0')
-            flat_indexes = torch.arange(total_games * self.seq_len, dtype=torch.long, device='cuda:0').reshape(total_games, self.seq_len)
+            game_indexes = torch.arange(total_games, dtype=torch.long, device=("cuda:0" if torch.cuda.is_available() else "cpu"))
+            flat_indexes = torch.arange(total_games * self.seq_len, dtype=torch.long, device=("cuda:0" if torch.cuda.is_available() else "cpu")).reshape(total_games, self.seq_len)
             avg_loss = 0
             for i in range(num_minibatches):
-                batch = torch.range(i * num_games_batch, (i + 1) * num_games_batch - 1, dtype=torch.long, device='cuda:0')
+                batch = torch.range(i * num_games_batch, (i + 1) * num_games_batch - 1, dtype=torch.long, device=("cuda:0" if torch.cuda.is_available() else "cpu"))
                 mb_indexes = game_indexes[batch]
                 mbatch = flat_indexes[mb_indexes].flatten()     
                 obs_batch = obs[mbatch]
@@ -139,7 +139,7 @@ class CentralValueTrain(nn.Module):
                 # returning loss from last epoch
                 avg_loss = 0
                 for i in range(num_minibatches):
-                    batch = torch.range(i * mini_batch, (i + 1) * mini_batch - 1, dtype=torch.long, device='cuda:0')
+                    batch = torch.range(i * mini_batch, (i + 1) * mini_batch - 1, dtype=torch.long, device=("cuda:0" if torch.cuda.is_available() else "cpu"))
                     obs_batch = obs[batch]
                     value_preds_batch = value_preds[batch]
                     returns_batch = returns[batch]

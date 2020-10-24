@@ -70,7 +70,7 @@ def variance_scaling_initializer(tensor, mode='fan_in',scale = 2.0):
 
 def random_sample(obs_batch, prob):
     num_batches = obs_batch.size()[0]
-    permutation = torch.randperm(num_batches).cuda()
+    permutation = torch.randperm(num_batches).to("cuda:0" if torch.cuda.is_available() else "cpu")
     start = 0
     end = int(prob * num_batches)
     indices = permutation[start:end]

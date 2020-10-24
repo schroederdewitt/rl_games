@@ -22,13 +22,13 @@ class RNDCuriosityTrain(nn.Module):
         rnd_config = {
             'input_shape' : state_shape,
         } 
-        self.model = RNDCuriosityNetwork(model.build('rnd', **rnd_config)).cuda()
+        self.model = RNDCuriosityNetwork(model.build('rnd', **rnd_config)).to("cuda:0" if torch.cuda.is_available() else "cpu")
         self.config = config
         self.lr = config['lr']
         self.writter = writter
         self.optimizer = torch.optim.Adam(self.model.parameters(), float(self.lr), eps=1e-07)
         self._preproc_obs = _preproc_obs
-        self.output_normalization = RunningMeanStd((1,), norm_only=True).cuda()
+        self.output_normalization = RunningMeanStd((1,), norm_only=True).to("cuda:0" if torch.cuda.is_available() else "cpu")
         self.frame = 0
         self.exp_percent = config.get('exp_percent', 1.0)
 
