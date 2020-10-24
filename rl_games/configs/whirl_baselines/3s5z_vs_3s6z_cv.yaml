@@ -71,7 +71,7 @@ params:
     seq_len: 2
     use_action_masks: True
     ignore_dead_batches : False
-    central_v: True
+    central_value: True
 
     env_config:
       name: 3s5z_vs_3s6z
