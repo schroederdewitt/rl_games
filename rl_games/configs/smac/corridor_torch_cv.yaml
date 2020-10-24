@@ -1,12 +1,14 @@
-params:  
+label: ""
+name: ""
+params:
   algo:
     name: a2c_discrete
 
   model:
     name: discrete_a2c
 
-  load_checkpoint: True
-  load_path: 'nn/corridor_cv.pth'
+  #load_checkpoint: True
+  #load_path: 'nn/corridor_cv.pth'
 
   network:
     name: actor_critic
