@@ -115,3 +115,6 @@ exp_scripts/
 analysis/
 
 db_config.private.yaml
+results/
+runs/
+3rdparty/
