@@ -191,6 +191,8 @@ if __name__ == '__main__':
     config_dict["params"]["config"]["cuda_device"] = "cuda:0" if torch.cuda.is_available() else "cpu"
     config_dict["params"]["config"]["use_cuda"] = torch.cuda.is_available()
     config_dict["use_tf"] = "--tf" in params
+    if "--tf" in params:
+        params.remove("--tf")
 
     # now add all the config to sacred
     ex.add_config(config_dict)

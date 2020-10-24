@@ -18,7 +18,8 @@ from rl_games.algos_tf14 import players
 
 
 class Runner:
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
         self.algo_factory = object_factory.ObjectFactory()
         self.algo_factory.register_builder('a2c_continuous', lambda **kwargs : a2c_continuous.A2CAgent(**kwargs))
         self.algo_factory.register_builder('a2c_discrete', lambda **kwargs : a2c_discrete.A2CAgent(**kwargs)) 
@@ -32,6 +33,7 @@ class Runner:
         self.model_builder = model_builder.ModelBuilder()
         self.network_builder = network_builder.NetworkBuilder()
         self.sess = None
+
 
     def reset(self):
         gpu_options = tf.GPUOptions(allow_growth=True, per_process_gpu_memory_fraction=0.8)

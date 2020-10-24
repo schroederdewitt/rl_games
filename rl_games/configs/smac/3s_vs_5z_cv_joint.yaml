@@ -1,4 +1,6 @@
-params:  
+name: ""
+label: ""
+params:
   algo:
     name: a2c_discrete
 
