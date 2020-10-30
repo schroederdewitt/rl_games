@@ -25,8 +25,6 @@ class SMACEnv(gym.Env):
         self.observation_space = gym.spaces.Box(low=0, high=1, shape=(self.env_info['obs_shape']+one_hot_agents, ), dtype=np.float32)
         self.state_space = gym.spaces.Box(low=0, high=1, shape=(self.env_info['state_shape'], ), dtype=np.float32)
 
-        
-
         self.obs_dict = {}
 
     def _preproc_state_obs(self, state, obs):

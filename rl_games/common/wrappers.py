@@ -279,6 +279,7 @@ class BatchedFrameStack(gym.Wrapper):
 
     def reset(self):
         ob = self.env.reset()
+        #print("reset ob: ", np.array(ob).shape)
         for _ in range(self.k):
             self.frames.append(ob)
         return self._get_ob()
@@ -292,14 +293,21 @@ class BatchedFrameStack(gym.Wrapper):
         assert len(self.frames) == self.k
         if self.transpose:
             frames = np.transpose(self.frames, (1, 2, 0))
+            #print("FRAMES T: ", frames.shape)
         else:
             if self.flatten:
                 frames = np.array(self.frames)
                 shape = np.shape(frames)
-                frames = np.transpose(self.frames, (1, 0, 2))
+                #frames = np.transpose(self.frames, (1, 0, 2))
+                #print("SLF FRAMES:", [[type(_f) for _f in f]  for f in self.frames])
+                #print("HHH:", self.frames[0][0])
+                #print("DDD:", self.frames[0][1])
+                #print("FRAMES: ", frames.shape)
+                # quit()
                 frames = np.reshape(self.frames, (shape[1], shape[0] * shape[2]))
             else:
                 frames = np.transpose(self.frames, (1, 0, 2))
+                #print("FRAMES: NT", frames.shape)
         return frames
 
 class BatchedFrameStackWithStates(gym.Wrapper):
