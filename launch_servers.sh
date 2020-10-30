@@ -24,9 +24,14 @@ for i in {1..3}; do
       #./run_servers.sh ${i} python3 tf14_runner.py --file=whirl_baselines/vdn_MMM2 with name=vdn_tf_MMM2_a label=vdn_rf_MMM2_a
       #./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/2s3z with name=2s3z_tf_dash label=2s3z_tf_dash &
       # ./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/bane_vs_bane with name=bane_tf_dash label=bane_tf_dash  &
+      #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3s5z_vs_3s6z_torch_cv with name=3s5z_vs_3s6z_torch_cv_dash label=3s5z_vs_3s6z_torch_cv_dash  &
+      #./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/1c3s5z with name=1c3s5z_tf_dash label=1c3s5z_tf_dash  &
+      # ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/6h_vs_8z_torch_cv with name=6h_vs_8z_torch_cv_dash label=6h_vs_8z_torch_cv_dash  &
+      # ./run_servers_cpu.sh ${i} python3 runner.py --tf --file=smac/2c_vs_64zg with name=2c_vs_64zg_tf_dash2 label=2c_vs_64zg_tf_dash2  &
+      #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3s5z_vs_3s6z_torch with name=3s5z_vs_3s6z_torch_dash label=3s5z_vs_3s6z_torch_dash  &
       #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/corridor_torch_cv with name=corridor_torch_cv_dash label=corridor_torch_cv_dash  &
       #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3s5z_vs_3s6z_torch_cv with name=3s5z_vs_3s6z_torch_cv_dash label=3s5z_vs_3s6z_torch_cv_dash  &
       #./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/1c3s5z with name=1c3s5z_tf_dash label=1c3s5z_tf_dash  &
-      ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv_joint with name=3m_torch_cv_joint_dash label=3m_torch_cv_joint_dash  &
-      ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv with name=3m_torch_cv_dash label=3m_torch_cv_dash  &
+      #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv_joint with name=3m_torch_cv_joint_dash label=3m_torch_cv_joint_dash  &
+      #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv with name=3m_torch_cv_dash label=3m_torch_cv_dash  &
 done
