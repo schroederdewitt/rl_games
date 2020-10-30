@@ -1,3 +1,5 @@
+label: ""
+name: ""
 params:  
   algo:
     name: a2c_discrete
