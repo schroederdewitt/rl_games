@@ -144,6 +144,7 @@ def create_dm_control_env(**kwargs):
         env = wrappers.FrameStack(env, frames, False)
     return env
 
+
 def create_super_mario_env(name='SuperMarioBros-v1'):
     import gym
     from nes_py.wrappers import JoypadSpace
@@ -214,6 +215,22 @@ def create_flex(path):
 
     return env
 
+def create_staghunt(name, **kwargs):
+    from rl_games.envs.stag_hunt import StagHuntEnv
+    frames = kwargs.pop('frames', 1)
+    flatten = kwargs.pop('flatten', True)
+    transpose = kwargs.pop('transpose', False)
+    #print(kwargs)
+    env = StagHuntEnv(None, **kwargs)
+    return wrappers.BatchedFrameStack(env, frames, transpose=False, flatten=flatten)
+
+def create_staghunt_cnn(name, **kwargs):
+    from rl_games.envs.stag_hunt import StagHuntEnv
+    frames = kwargs.pop('frames', 1)
+    #print(kwargs)
+    env = StagHuntEnv(None, **kwargs)
+    return wrappers.BatchedFrameStack(env, frames, transpose=False) # , flatten=True)
+
 def create_smac(name, **kwargs):
     from rl_games.envs.smac_env import SMACEnv
     frames = kwargs.pop('frames', 1)
@@ -221,13 +238,14 @@ def create_smac(name, **kwargs):
     flatten = kwargs.pop('flatten', True)
     has_cv = kwargs.get('central_value', False)
     env = SMACEnv(name, **kwargs)
-    
-    
+    #print("SMACCER")
     if frames > 1:
         if has_cv:
             env = wrappers.BatchedFrameStackWithStates(env, frames, transpose=False, flatten=flatten)
+            #print("SMACCER CV")
         else:
             env = wrappers.BatchedFrameStack(env, frames, transpose=False, flatten=flatten)
+            #print("SMACCER NO CV")
     return env
 
 def create_smac_cnn(name, **kwargs):
@@ -376,6 +394,14 @@ configurations = {
         'env_creator' : lambda **kwargs : create_smac(**kwargs),
         'vecenv_type' : 'RAY_SMAC'
     },
+    'staghunt_cnn': {
+        'env_creator': lambda **kwargs: create_staghunt_cnn(**kwargs),
+        'vecenv_type': 'RAY_SMAC'
+    },
+    'staghunt': {
+        'env_creator': lambda **kwargs: create_staghunt(**kwargs),
+        'vecenv_type': 'RAY_SMAC'
+    },
     'smac_cnn' : {
         'env_creator' : lambda **kwargs : create_smac_cnn(**kwargs),
         'vecenv_type' : 'RAY_SMAC'
@@ -434,6 +460,7 @@ def get_obs_and_action_spaces_from_config(config):
     env.close()
     # workaround for deepmind control
 
+    observation_space = env.observation_space
     if isinstance(observation_space, gym.spaces.dict.Dict):
         result_shapes['observation_space'] = observation_space['observations']
     if isinstance(observation_space, dict):

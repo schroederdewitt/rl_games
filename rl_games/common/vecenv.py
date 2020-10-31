@@ -181,6 +181,7 @@ class RayVecSMACEnv(IVecEnv):
 
         for res in res_obs:
             cobs, crewards, cdones, cinfos = ray.get(res)
+
             if self.use_global_obs:
                 newobs.append(cobs["obs"])
                 newstates.append(cobs["state"])
@@ -197,7 +198,6 @@ class RayVecSMACEnv(IVecEnv):
             ret_obs = newobsdict
         else:
             ret_obs = np.concatenate(newobs, axis=0)
-
         return ret_obs, np.concatenate(newrewards, axis=0), np.concatenate(newdones, axis=0), newinfos
 
     def has_action_masks(self):

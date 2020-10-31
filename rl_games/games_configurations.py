@@ -277,6 +277,12 @@ bipedalwalker_lstm_config = {
     'seq_len' : 8
 }
 
+def create_staghunt(name, **kwargs):
+    from envs.stag_hunt import StagHuntEnv
+    frames = kwargs.pop('frames', 1)
+    print(kwargs)
+    return wrappers.BatchedFrameStack(StagHuntEnv(1, **kwargs), frames, transpose=False, flatten=True)
+
 bipedalwalkerhardcore__config = {
     'network' : models.ModelA2CContinuousLogStd(networks.default_a2c_network_separated_logstd),
     'reward_shaper' : tr_helpers.DefaultRewardsShaper(scale_value = 1.0 / 10.0),
