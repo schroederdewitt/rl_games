@@ -4,7 +4,7 @@
 #      ./run_servers.sh 3 python3 torch_runner.py --file=whirl_baselines/3m_torch with name=test3_3m_torch label=test3_3m_torch &
 #done
 
-for i in {1..3}; do 
+for i in {1..2}; do 
       #./run_servers.sh ${i} python3 torch_runner.py --file=whirl_baselines/3m_torch_cnn with name=test3_3m_torch_cnn label=test3_3m_torch_cnn &
       #./run_servers.sh ${i} python3 torch_runner.py --file=whirl_baselines/2s3z_torch_cnn with name=test3_2s3z_torch_cnn label=test3_2s3z_torch_cnn &
       #./run_servers.sh ${i} python3 torch_runner.py --file=whirl_baselines/2s3z_torch with name=test3_2s3z_torch label=test3_2s3z_torch &
@@ -27,6 +27,8 @@ for i in {1..3}; do
       #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/corridor_torch_cv with name=corridor_torch_cv_dash label=corridor_torch_cv_dash  &
       #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3s5z_vs_3s6z_torch_cv with name=3s5z_vs_3s6z_torch_cv_dash label=3s5z_vs_3s6z_torch_cv_dash  &
       #./run_servers_cpu.sh ${i} python3 tf14_runner.py --file=whirl_baselines/1c3s5z with name=1c3s5z_tf_dash label=1c3s5z_tf_dash  &
-      ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv_joint with name=3m_torch_cv_joint_dash label=3m_torch_cv_joint_dash  &
-      ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv with name=3m_torch_cv_dash label=3m_torch_cv_dash  &
+      #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv_joint with name=3m_torch_cv_joint_dash label=3m_torch_cv_joint_dash  &
+      #./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3m_torch_cv with name=3m_torch_cv_dash label=3m_torch_cv_dash  &
+      # ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/3s5z_vs_3s6z_torch with name=3s5z_vs_3s6z_torch_dash label=3s5z_vs_3s6z_torch_dash  &
+      ./run_servers_cpu.sh ${i} python3 runner.py --file=smac/10m_vs_11m_torch with name=10m_vs_11m_torch_dash3 label=10m_vs_11m_torch_dash3  &
 done
